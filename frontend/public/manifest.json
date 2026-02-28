@@ -1,0 +1,23 @@
+{
+  "short_name": "WhatsAppLite",
+  "name": "WhatsApp-Lite Messaging App",
+  "icons": [
+    {
+      "src": "whatsapp-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#a78bfa",
+  "background_color": "#1a1a2e",
+  "description": "A high-performance, real-time messaging application",
+  "orientation": "portrait-primary",
+  "categories": [
+    "social",
+    "communication"
+  ],
+  "lang": "en"
+}
