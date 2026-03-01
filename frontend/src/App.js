@@ -61,6 +61,13 @@ const WALLPAPERS = {
   default: 'bg-[#0b141a] glassmorphic-dark',
   light: 'bg-[#e5ddd5] glassmorphic',
   dark: 'bg-[#0d1418] glassmorphic-dark',
+  solidRed: 'bg-red-900 glassmorphic-dark',
+  solidBlue: 'bg-blue-900 glassmorphic-dark',
+  solidGreen: 'bg-green-900 glassmorphic-dark',
+  solidPurple: 'bg-indigo-900 glassmorphic-dark',
+  solidYellow: 'bg-yellow-900 glassmorphic-dark',
+  solidPink: 'bg-pink-900 glassmorphic-dark',
+  solidGray: 'bg-gray-800 glassmorphic-dark',
   gradient: 'bg-gradient-to-br from-[#1a2a32] to-[#0b141a] glassmorphic-dark',
   nature: 'bg-gradient-to-br from-green-900 to-green-700 glassmorphic-dark',
   ocean: 'bg-gradient-to-br from-blue-900 to-blue-700 glassmorphic-dark',
@@ -6943,13 +6950,17 @@ function App() {
                 </div>
               ) : currentStatusUser.statuses[currentStatusIndex]?.type === 'image' ? (
                 <img
-                  src={`${API_URL}${currentStatusUser.statuses[currentStatusIndex].fileUrl}`}
+                  src={currentStatusUser.statuses[currentStatusIndex].fileUrl.startsWith('http') || currentStatusUser.statuses[currentStatusIndex].fileUrl.startsWith('data:')
+                    ? currentStatusUser.statuses[currentStatusIndex].fileUrl
+                    : `${API_URL}${currentStatusUser.statuses[currentStatusIndex].fileUrl}`}
                   alt="Status"
                   className="max-w-full max-h-full object-contain"
                 />
               ) : currentStatusUser.statuses[currentStatusIndex]?.type === 'video' ? (
                 <video
-                  src={`${API_URL}${currentStatusUser.statuses[currentStatusIndex].fileUrl}`}
+                  src={currentStatusUser.statuses[currentStatusIndex].fileUrl.startsWith('http') || currentStatusUser.statuses[currentStatusIndex].fileUrl.startsWith('data:')
+                    ? currentStatusUser.statuses[currentStatusIndex].fileUrl
+                    : `${API_URL}${currentStatusUser.statuses[currentStatusIndex].fileUrl}`}
                   className="max-w-full max-h-full object-contain"
                   autoPlay
                   controls
