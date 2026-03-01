@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Github, Zap, ArrowRight, Download } from 'lucide-react';
+import { Github, ArrowRight, Download } from 'lucide-react';
 import KineticGrid from './KineticGrid';
 import { initPWAInstall, getDeferredPrompt, setDeferredPrompt, isPWAInstalled } from '../hooks/usePWAInstall';
 
 const HeroSection = ({ onGetStarted }) => {
   const heroRef = useRef(null);
-  const [isInstallable, setIsInstallable] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -19,13 +18,8 @@ const HeroSection = ({ onGetStarted }) => {
   const scaleBg = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
 
   useEffect(() => {
-    // Initialize PWA install handler
-    initPWAInstall(setIsInstallable);
-
-    // Check if already installed
-    if (isPWAInstalled()) {
-      setIsInstallable(false);
-    }
+    // Initialize PWA install handler (suppressing setIsInstallable if not used)
+    initPWAInstall(() => { });
   }, []);
 
   const handleInstall = async () => {

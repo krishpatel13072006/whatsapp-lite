@@ -2,15 +2,15 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-escape */
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Sparkles, Points, PointMaterial } from '@react-three/drei';
+import { motion } from 'framer-motion';
+import { Canvas } from '@react-three/fiber';
+import { Float, Sparkles } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
 import { CircleParticles, CircleMesh } from './components/AuthShapes';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import axios from 'axios';
-import { Send, Phone, Video, MessageSquare, History, Trash2, LogOut, User, Paperclip, Mic, ArrowLeft, Settings, Image, File, Copy, X, Check, Smile, Info, Sticker, Bell, BellOff, Ban, UserX, Users, UserPlus, Search, Star, Reply, Edit, Pin, Clock, Palette, Plus, Compass, MoreVertical } from 'lucide-react';
+import { Send, Phone, Video, MessageSquare, History, Trash2, LogOut, User, Paperclip, Mic, ArrowLeft, Settings, Image, File, Copy, X, Check, Smile, Info, Sticker, Bell, BellOff, Ban, UserX, Users, Search, Star, Reply, Edit, Pin, Clock, Palette, Plus, Compass, MoreVertical } from 'lucide-react';
 import EmojiPicker, { EmojiStyle } from 'emoji-picker-react';
 import SkeletonLoader from './components/SkeletonLoader';
 import EmptyChatScene3D from './components/EmptyChatScene3D';
@@ -221,8 +221,8 @@ function App() {
   const [currentView, setCurrentView] = useState(() => localStorage.getItem('token') ? 'chat' : 'landing'); // landing, auth, main, settings, profile, etc.
 
   // Function to navigate and track history
+  // Function to navigate
   const navigateTo = (view) => {
-    setNavigationHistory([...navigationHistory, currentView]);
     setCurrentView(view);
   };
 
@@ -286,29 +286,14 @@ function App() {
   };
 
   // Toggle particles
+  // Toggle particles
   const toggleParticles = () => {
     setShowParticles(!showParticles);
-    if (showParticles) {
-      removeParticles();
-    } else {
-      addParticles();
-    }
   };
 
   // Toggle animations
   const toggleAnimations = () => {
     setAnimationEnabled(!animationEnabled);
-    if (!animationEnabled) {
-      // Enable animations
-      document.querySelectorAll('*').forEach(el => {
-        el.style.animationPlayState = 'running';
-      });
-    } else {
-      // Disable animations
-      document.querySelectorAll('*').forEach(el => {
-        el.style.animationPlayState = 'paused';
-      });
-    }
   };
 
   // Apply theme classes to elements
@@ -1458,6 +1443,7 @@ function App() {
     }
   };
 
+  // Create a new status
   // Create a new status
   const createStatus = async (type, data) => {
     try {

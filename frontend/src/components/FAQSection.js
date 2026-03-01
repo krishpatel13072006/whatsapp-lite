@@ -14,7 +14,7 @@ const FAQSection = () => {
   const [openIdx, setOpenIdx] = useState(null);
 
   return (
-    <section className="py-24 px-6 relative">
+    <section id="faq" className="py-20 px-6 relative overflow-hidden">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

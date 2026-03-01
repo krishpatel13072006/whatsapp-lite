@@ -2,24 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Zap, Menu, X, Download } from 'lucide-react';
-import { initPWAInstall, getDeferredPrompt, setDeferredPrompt, isPWAInstalled, canInstallPWA } from '../hooks/usePWAInstall';
+import { initPWAInstall, getDeferredPrompt, setDeferredPrompt, isPWAInstalled } from '../hooks/usePWAInstall';
 
 const NAV_LINKS = ['Features', 'How It Works', 'Companies', 'Testimonials', 'Pricing', 'FAQ', 'Contact'];
 
 const Navbar = ({ onGetStarted, onLoginClick, isLoggedIn }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isInstallable, setIsInstallable] = useState(false);
   const { scrollY } = useScroll();
 
   useEffect(() => {
     // Initialize PWA install handler
-    initPWAInstall(setIsInstallable);
-
-    // Check if already installed
-    if (isPWAInstalled()) {
-      setIsInstallable(false);
-    }
+    initPWAInstall(() => { });
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {

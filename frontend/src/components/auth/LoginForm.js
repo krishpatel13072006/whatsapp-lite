@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { MessageSquare, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
-import { Float, Sparkles, MeshTransmissionMaterial, Environment } from '@react-three/drei';
+import { Float, Sparkles, MeshTransmissionMaterial } from '@react-three/drei';
 
 /**
  * Login Form Component
