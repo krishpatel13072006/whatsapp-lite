@@ -22,12 +22,12 @@ self.addEventListener('install', (event) => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
-  // Skip API requests - always go to network
-  if (event.request.url.includes('/api/')) {
-    event.respondWith(fetch(event.request));
+  // Skip cross-origin requests and API requests - let the browser handle them directly
+  if (event.request.url.includes('/api/') || !event.request.url.startsWith(self.location.origin)) {
     return;
   }
-  
+
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
