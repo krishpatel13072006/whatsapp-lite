@@ -20,7 +20,7 @@ const HeroSection = ({ onGetStarted }) => {
   useEffect(() => {
     // Initialize PWA install handler
     initPWAInstall(setIsInstallable);
-    
+
     // Check if already installed
     if (isPWAInstalled()) {
       setIsInstallable(false);
@@ -86,15 +86,7 @@ const HeroSection = ({ onGetStarted }) => {
       </motion.div>
 
       <div className="relative z-10 text-center px-2 md:px-6 max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-3 md:px-4 py-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm mb-6 md:mb-8"
-        >
-          <Zap size={14} className="text-primary" />
-          <span className="text-xs md:text-sm text-primary font-medium">v2.0 Architecture Complete</span>
-        </motion.div>
+
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -123,23 +115,23 @@ const HeroSection = ({ onGetStarted }) => {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4"
         >
-          <button 
+          <button
             onClick={handleGetStarted}
             className="group w-full sm:w-auto px-6 md:px-8 py-3.5 md:py-4 bg-primary text-primary-foreground font-semibold rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
           >
             Start Chatting
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </button>
-          
+
           {/* Always visible Install button - shows permanently */}
-          <button 
+          <button
             onClick={handleInstall}
             className="w-full sm:w-auto px-6 md:px-8 py-3.5 md:py-4 border border-border text-foreground font-semibold rounded-xl hover:bg-muted/50 transition-all flex items-center justify-center gap-2 bg-background/50 backdrop-blur-sm"
           >
             <Download size={18} />
             Install App
           </button>
-          
+
           <button className="w-full sm:w-auto px-6 md:px-8 py-3.5 md:py-4 border border-border text-foreground font-semibold rounded-xl hover:bg-muted transition-all flex items-center justify-center gap-2">
             <Github size={18} />
             View Source
