@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react';
 
 
 const FAQ = [
-  { q: "Is WhatsApp-Lite free to use?", a: "Yes! The basic version is completely free. We offer optional paid plans for power users." },
+  { q: "Is SparkChat free to use?", a: "Yes! The basic version is completely free. We offer optional paid plans for power users." },
   { q: "Is my data secure?", a: "Absolutely. We use end-to-end encryption for all messages and follow industry best practices." },
   { q: "Can I use it on multiple devices?", a: "Yes, your chats sync across all your devices automatically." },
   { q: "How do I import my contacts?", a: "Simply sign up and we'll automatically find contacts who are already on the platform." },

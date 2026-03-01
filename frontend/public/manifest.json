@@ -1,6 +1,6 @@
 {
-  "short_name": "WhatsAppLite",
-  "name": "WhatsApp-Lite Messaging App",
+  "short_name": "SparkChat",
+  "name": "SparkChat Messaging App",
   "icons": [
     {
       "src": "whatsapp-icon.svg",
@@ -13,7 +13,7 @@
   "display": "standalone",
   "theme_color": "#a78bfa",
   "background_color": "#1a1a2e",
-  "description": "A high-performance, real-time messaging application",
+  "description": "A modern, secure messaging application for everyone.",
   "orientation": "portrait-primary",
   "categories": [
     "social",

@@ -237,7 +237,7 @@ function App() {
 
   // Initialize theme
   useEffect(() => {
-    const savedTheme = localStorage.getItem('whatsappTheme') || 'dark-theme';
+    const savedTheme = localStorage.getItem('devChatTheme') || 'dark-theme';
     setTheme(savedTheme);
     document.documentElement.classList.add(savedTheme);
     if (savedTheme === 'dark-theme') {
@@ -324,7 +324,7 @@ function App() {
       document.documentElement.classList.remove('dark');
     }
     setTheme(newTheme);
-    localStorage.setItem('whatsappTheme', newTheme);
+    localStorage.setItem('devChatTheme', newTheme);
   };
 
   // Helper to safely parse JSON from localStorage
@@ -366,7 +366,7 @@ function App() {
   const storedContacts = getInitialUserData('contacts', []);
   const storedRecentChats = getInitialUserData('recentChats', []);
   const storedWallpaper = 'default'; // Always default initially, will be fetched from database
-  const storedAbout = localStorage.getItem('about') || 'Hey there! I am using WhatsApp-Lite';
+  const storedAbout = localStorage.getItem('about') || 'Hey there! I am using SparkChat';
 
   // Chat states
   const [selectedChat, setSelectedChat] = useState(null);
@@ -3139,7 +3139,7 @@ function App() {
           >
             <h1 className="text-2xl font-bold text-[#111b21] dark:text-white mb-6 text-center gradient-text">
               <MessageSquare className="inline mr-2" size={28} />
-              WhatsApp Lite
+              SparkChat
             </h1>
 
             {/* Step 1: Enter Email/Phone/Username */}
@@ -3320,7 +3320,7 @@ function App() {
         >
           <h1 className="text-2xl font-bold text-[#111b21] dark:text-white mb-6 text-center gradient-text">
             <MessageSquare className="inline mr-2" size={28} />
-            WhatsApp Lite
+            SparkChat
           </h1>
           <h2 className="text-[#aebac1] text-center mb-6 font-medium">
             {isRegistering ? '📝 Create a new account' : '🔐 Welcome back! Please sign in'}
@@ -3735,7 +3735,7 @@ function App() {
           {searchUserNotFound && (
             <div className="absolute left-3 right-3 bg-[#233138] rounded-lg shadow-xl z-50 mt-1 border border-gray-300 dark:border-gray-700/50 p-4 text-center">
               <p className="text-red-400 text-sm">User not found</p>
-              <p className="text-[#54656f] dark:text-gray-400 text-xs mt-1">This username is not registered on WhatsApp-Lite</p>
+              <p className="text-[#54656f] dark:text-gray-400 text-xs mt-1">This username is not registered on SparkChat</p>
             </div>
           )}
           {/* Contacts Dropdown */}
@@ -3783,7 +3783,7 @@ function App() {
                     }}
                   >
                     <p className="text-[#e9edef] font-medium text-sm">{contact.username}</p>
-                    <p className="text-[#8696a0] text-xs truncate">{contact.about || 'Hey there! I am using WhatsApp'}</p>
+                    <p className="text-[#8696a0] text-xs truncate">{contact.about || 'Hey there! I am using SparkChat'}</p>
                   </div>
                   <button
                     onClick={() => fetchUserProfile(contact.username)}

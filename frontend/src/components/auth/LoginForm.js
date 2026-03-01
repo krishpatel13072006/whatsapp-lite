@@ -165,7 +165,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
             transition={{ delay: 0.3 }}
             className="text-2xl sm:text-3xl font-bold text-white gradient-text"
           >
-            WhatsApp Lite
+            SparkChat
           </motion.h1>
           <p className="text-gray-400 mt-2 text-sm sm:text-base">Sign in to continue</p>
 
@@ -176,7 +176,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
             transition={{ delay: 0.4 }}
             className="mt-4 p-4 bg-gradient-to-r from-[#1a2a33] to-[#243642] rounded-xl border border-gray-700/30"
           >
-            <h3 className="text-[#00a884] font-semibold text-sm mb-2">✨ About WhatsApp Lite</h3>
+            <h3 className="text-[#00a884] font-semibold text-sm mb-2">✨ About SparkChat</h3>
             <p className="text-gray-400 text-xs leading-relaxed">
               A modern, fast, and secure messaging app built with cutting-edge technology.
               Experience seamless chat, voice messages, media sharing, and more - all in a beautiful interface.

@@ -296,7 +296,7 @@ const RichMedia = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.5 }}
                 >
-                    Send interactive buttons, product catalogs, automated PDFs, and rich media directly through WhatsApp.
+                    Send interactive buttons, product catalogs, automated PDFs, and rich media directly through the platform.
                 </motion.p>
 
                 {/* CTA */}

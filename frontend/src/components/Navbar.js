@@ -79,7 +79,7 @@ const Navbar = ({ onGetStarted, onLoginClick, isLoggedIn }) => {
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <MessageCircle size={16} className="text-primary-foreground" />
             </div>
-            <span className="font-display font-bold text-foreground text-lg">WhatsAppLite</span>
+            <span className="font-display font-bold text-foreground text-lg">SparkChat</span>
           </div>
 
           <div className="hidden md:flex items-center gap-6">

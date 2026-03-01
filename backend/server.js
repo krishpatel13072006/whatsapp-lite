@@ -26,7 +26,7 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite-12311.netlify.app", "https://wahtsapplite-12311.netlify.app", "https://whatsapp-lite.vercel.app"],
+  origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite.vercel.app", "https://spark--chat.vercel.app"],
   methods: ["GET", "POST", "DELETE"],
   credentials: true
 }));
@@ -39,7 +39,7 @@ const server = http.createServer(app);
 // Initialize Socket.io
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite-12311.netlify.app", "https://wahtsapplite-12311.netlify.app", "https://whatsapp-lite.vercel.app"],
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite.vercel.app", "https://spark--chat.vercel.app"],
     methods: ["GET", "POST", "DELETE"],
     credentials: true
   }
@@ -63,11 +63,11 @@ const sendVerificationEmail = async (email, code, username) => {
     const mailOptions = {
       from: process.env.EMAIL_USER || 'krishpatelhacker.13579@gmail.com',
       to: email,
-      subject: 'WhatsApp-Lite Password Reset Code',
+      subject: 'SparkChat Password Reset Code',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
           <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <h2 style="color: #25D366; margin-bottom: 20px;">WhatsApp-Lite Password Reset</h2>
+            <h2 style="color: #25D366; margin-bottom: 20px;">SparkChat Password Reset</h2>
             <p style="color: #333; font-size: 16px;">Hello <strong>${username}</strong>,</p>
             <p style="color: #666; font-size: 14px;">You requested to reset your password. Use the following verification code:</p>
             <div style="background-color: #25D366; color: white; font-size: 32px; font-weight: bold; text-align: center; padding: 20px; border-radius: 8px; margin: 20px 0; letter-spacing: 5px;">
@@ -75,7 +75,7 @@ const sendVerificationEmail = async (email, code, username) => {
             </div>
             <p style="color: #999; font-size: 12px;">This code will expire in 10 minutes. If you didn't request this, please ignore this email.</p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="color: #999; font-size: 12px; text-align: center;">© WhatsApp-Lite Team</p>
+            <p style="color: #999; font-size: 12px; text-align: center;">© SparkChat Team</p>
           </div>
         </div>
       `

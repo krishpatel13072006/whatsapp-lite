@@ -33,7 +33,7 @@ const HeroSection = ({ onGetStarted }) => {
       }
     } else {
       // Fallback: show alert with instructions
-      alert('To install WhatsAppLite as an app:\n\n1. Click the browser menu (⋮)\n2. Select "Install WhatsAppLite" or "Add to Home Screen"\n\nor\n\nUse Chrome/Edge for the best install experience.');
+      alert('To install SparkChat as an app:\n\n1. Click the browser menu (⋮)\n2. Select "Install SparkChat" or "Add to Home Screen"\n\nor\n\nUse Chrome/Edge for the best install experience.');
     }
   };
 
