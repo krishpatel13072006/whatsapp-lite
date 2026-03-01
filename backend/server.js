@@ -329,21 +329,12 @@ function filterUserObject(requesterUsername, user, contactSet) {
   return filtered;
 }
 
-// Multer setup
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+// Multer setup - using memory storage for Base64 conversion
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
-const upload = multer({ storage: storage });
 
 // JWT Middleware
 const authenticateToken = (req, res, next) => {
@@ -706,39 +697,48 @@ app.post('/api/upload-profile-picture', authenticateToken, upload.single('file')
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
-    const fileUrl = `${backendUrl}/uploads/${req.file.filename}`;
+    // Convert file buffer to base64 Data URI
+    const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
     const user = await User.findOneAndUpdate(
       { username: req.user.username },
-      { profilePicture: fileUrl },
+      { profilePicture: base64Image },
       { new: true }
     );
 
     // Also update contacts list to reflect new profile picture
     const updatedUser = user.toObject();
-    updatedUser.profilePicture = fileUrl;
+    updatedUser.profilePicture = base64Image;
 
-    res.json({ message: "Profile picture updated successfully", profilePicture: fileUrl, user: updatedUser });
+    res.json({ message: "Profile picture updated successfully", profilePicture: base64Image, user: updatedUser });
   } catch (error) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ message: "File is too large. Maximum size is 5MB." });
+    }
     res.status(500).json({ message: "Error uploading profile picture", error: error.message });
   }
 });
 
 // ===== UPLOAD WALLPAPER (was missing — caused upload failure) =====
+// ===== UPLOAD WALLPAPER =====
 app.post('/api/upload-wallpaper', authenticateToken, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-    const wallpaperUrl = `/uploads/${req.file.filename}`;
+    // Convert file buffer to base64 Data URI
+    const base64Wallpaper = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
-    // Save the wallpaper path to the user's record
+    // Save the base64 string to the user's record
     await User.findOneAndUpdate(
       { username: req.user.username },
-      { wallpaper: wallpaperUrl }
+      { wallpaper: base64Wallpaper }
     );
 
-    res.json({ message: "Wallpaper uploaded successfully", wallpaperUrl });
+    res.json({ message: "Wallpaper uploaded successfully", wallpaperUrl: base64Wallpaper });
   } catch (error) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ message: "File is too large. Maximum size is 5MB." });
+    }
     res.status(500).json({ message: "Error uploading wallpaper", error: error.message });
   }
 });
