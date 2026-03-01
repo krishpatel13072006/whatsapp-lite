@@ -26,7 +26,7 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+  origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite-12311.netlify.app"],
   methods: ["GET", "POST", "DELETE"],
   credentials: true
 }));
@@ -39,7 +39,7 @@ const server = http.createServer(app);
 // Initialize Socket.io
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite-12311.netlify.app"],
     methods: ["GET", "POST", "DELETE"],
     credentials: true
   }
