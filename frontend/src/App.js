@@ -19,7 +19,7 @@ import LandingPage from './components/LandingPage';
 import './animations.css';
 
 // API URL for backend requests
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
 // Local sticker packs
 const STICKER_PACKS = {
