@@ -18,6 +18,9 @@ import RegisterForm from './components/auth/RegisterForm';
 import LandingPage from './components/LandingPage';
 import './animations.css';
 
+// API URL for backend requests
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 // Local sticker packs
 const STICKER_PACKS = {
   cuppy: {
@@ -76,7 +79,7 @@ function BlockUsersList({ blockedContacts, setBlockedContacts }) {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('${API_URL}/api/all-users', {
+        const res = await axios.get(`${API_URL}/api/all-users`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setAllUsers(res.data || []);
@@ -95,13 +98,13 @@ function BlockUsersList({ blockedContacts, setBlockedContacts }) {
     try {
       const token = localStorage.getItem('token');
       if (isBlocked(user._id)) {
-        await axios.post('${API_URL}/api/unblock-contact',
+        await axios.post(`${API_URL}/api/unblock-contact`,
           { contactId: user._id },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setBlockedContacts(prev => prev.filter(c => c._id !== user._id));
       } else {
-        await axios.post('${API_URL}/api/block-contact',
+        await axios.post(`${API_URL}/api/block-contact`,
           { contactId: user._id },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -168,9 +171,6 @@ function BlockUsersList({ blockedContacts, setBlockedContacts }) {
 }
 
 function App() {
-  // API URL for backend requests
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem('token'));
   const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState('');
@@ -569,7 +569,7 @@ function App() {
     const savedUsername = localStorage.getItem('username');
     console.log('🚀 Initializing app for user:', savedUsername);
 
-    socketRef.current = io.connect('${API_URL}', {
+    socketRef.current = io.connect(`${API_URL}`, {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
@@ -1164,7 +1164,7 @@ function App() {
     setError('');
     console.log('Attempting login with:', username);
     try {
-      const res = await axios.post('${API_URL}/api/login', { username, password });
+      const res = await axios.post(`${API_URL}/api/login`, { username, password });
       console.log('Login success:', res.data);
 
       // Clear any previous user's data from state before setting new user
@@ -1231,7 +1231,7 @@ function App() {
     setIsAuthLoading(true);
     setError('');
     try {
-      await axios.post('${API_URL}/api/register', { username, password });
+      await axios.post(`${API_URL}/api/register`, { username, password });
       console.log('Registration successful for:', username);
       setIsRegistering(false);
       setUsername('');
@@ -1261,7 +1261,7 @@ function App() {
     setIsAuthLoading(true);
     setError('');
     try {
-      const res = await axios.post('${API_URL}/api/request-password-reset', {
+      const res = await axios.post(`${API_URL}/api/request-password-reset`, {
         identifier: resetIdentifier
       });
       setResetUsername(res.data.username);
@@ -1279,7 +1279,7 @@ function App() {
     setIsAuthLoading(true);
     setError('');
     try {
-      await axios.post('${API_URL}/api/verify-reset-code', {
+      await axios.post(`${API_URL}/api/verify-reset-code`, {
         username: resetUsername,
         code: resetCode
       });
@@ -1310,7 +1310,7 @@ function App() {
     }
 
     try {
-      await axios.post('${API_URL}/api/reset-password', {
+      await axios.post(`${API_URL}/api/reset-password`, {
         username: resetUsername,
         code: resetCode,
         newPassword
@@ -1348,7 +1348,7 @@ function App() {
   const fetchUserSettings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/user-settings', {
+      const res = await axios.get(`${API_URL}/api/user-settings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setWallpaper(res.data.wallpaper || 'default');
@@ -1382,7 +1382,7 @@ function App() {
   const fetchBlockedContacts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/blocked-contacts', {
+      const res = await axios.get(`${API_URL}/api/blocked-contacts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBlockedContacts(res.data || []);
@@ -1396,7 +1396,7 @@ function App() {
     try {
       console.log('Fetching statuses...');
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/status', {
+      const res = await axios.get(`${API_URL}/api/status`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('Statuses fetched:', res.data);
@@ -1422,7 +1422,7 @@ function App() {
         if (data.caption) formData.append('caption', data.caption);
       }
 
-      const res = await axios.post('${API_URL}/api/status', formData, {
+      const res = await axios.post(`${API_URL}/api/status`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -1710,7 +1710,7 @@ function App() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('${API_URL}/api/upload-file', formData, {
+      const res = await axios.post(`${API_URL}/api/upload-file`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -2298,7 +2298,7 @@ function App() {
       formData.append('caller', me);
       try {
         const token = localStorage.getItem('token');
-        await axios.post('${API_URL}/api/save-call', formData, {
+        await axios.post(`${API_URL}/api/save-call`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } catch (error) {
@@ -2449,7 +2449,7 @@ function App() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/call-logs', {
+      const res = await axios.get(`${API_URL}/api/call-logs`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCallHistory(res.data);
@@ -2479,7 +2479,7 @@ function App() {
     try {
       const token = localStorage.getItem('token');
       console.log('Loading contacts, token:', !!token);
-      const res = await axios.get('${API_URL}/api/users', {
+      const res = await axios.get(`${API_URL}/api/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('✅ Contacts loaded:', res.data.length, res.data);
@@ -2496,7 +2496,7 @@ function App() {
       const currentUsername = localStorage.getItem('username');
       console.log('🔄 Loading recent chats for:', currentUsername);
 
-      const res = await axios.get('${API_URL}/api/recent-chats', {
+      const res = await axios.get(`${API_URL}/api/recent-chats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -2526,7 +2526,7 @@ function App() {
   const loadUnreadCounts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/unread-counts', {
+      const res = await axios.get(`${API_URL}/api/unread-counts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUnreadCounts(res.data);
@@ -2540,7 +2540,7 @@ function App() {
   const loadCallHistory = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/call-logs', {
+      const res = await axios.get(`${API_URL}/api/call-logs`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCallHistory(res.data);
@@ -2554,7 +2554,7 @@ function App() {
     try {
       const token = localStorage.getItem('token');
       const currentUsername = localStorage.getItem('username');
-      const res = await axios.get('${API_URL}/api/messages/starred', {
+      const res = await axios.get(`${API_URL}/api/messages/starred`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Process results to include starred status for current user
@@ -2576,7 +2576,7 @@ function App() {
   const loadGroups = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/groups', {
+      const res = await axios.get(`${API_URL}/api/groups`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Remove duplicates by _id
@@ -2613,7 +2613,7 @@ function App() {
       const token = localStorage.getItem('token');
       const currentUsername = localStorage.getItem('username');
 
-      const res = await axios.post('${API_URL}/api/groups/create', {
+      const res = await axios.post(`${API_URL}/api/groups/create`, {
         name: newGroupName,
         description: newGroupDescription,
         profilePicture: newGroupProfilePicture,
@@ -2891,7 +2891,7 @@ function App() {
   const fetchBroadcasts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('${API_URL}/api/broadcasts', {
+      const res = await axios.get(`${API_URL}/api/broadcasts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBroadcasts(res.data);
@@ -2904,7 +2904,7 @@ function App() {
   const createBroadcast = async (name, recipients) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('${API_URL}/api/broadcasts/create',
+      const res = await axios.post(`${API_URL}/api/broadcasts/create`,
         { name, recipients },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -3999,12 +3999,12 @@ function App() {
               try {
                 const token = localStorage.getItem('token');
                 if (chatOptionsMenu.isBlocked) {
-                  await axios.post('${API_URL}/api/unblock-contact',
+                  await axios.post(`${API_URL}/api/unblock-contact`,
                     { contactId: chatOptionsMenu.userId },
                     { headers: { Authorization: `Bearer ${token}` } }
                   );
                 } else {
-                  await axios.post('${API_URL}/api/block-contact',
+                  await axios.post(`${API_URL}/api/block-contact`,
                     { contactId: chatOptionsMenu.userId },
                     { headers: { Authorization: `Bearer ${token}` } }
                   );
@@ -4038,7 +4038,7 @@ function App() {
                 const duration = parseInt(e.target.value);
                 try {
                   const token = localStorage.getItem('token');
-                  await axios.post('${API_URL}/api/disappearing-messages', {
+                  await axios.post(`${API_URL}/api/disappearing-messages`, {
                     chatWith: chatOptionsMenu.userId,
                     duration
                   }, { headers: { Authorization: `Bearer ${token}` } });
@@ -5408,7 +5408,7 @@ function App() {
                             formData.append('file', file);
                             try {
                               const token = localStorage.getItem('token');
-                              const res = await axios.post('${API_URL}/api/upload-profile-picture', formData, {
+                              const res = await axios.post(`${API_URL}/api/upload-profile-picture`, formData, {
                                 headers: {
                                   Authorization: `Bearer ${token}`
                                 }
@@ -5455,7 +5455,7 @@ function App() {
                       setShowQRModal(true);
                       try {
                         const token = localStorage.getItem('token');
-                        const res = await axios.get('${API_URL}/api/qr-code', {
+                        const res = await axios.get(`${API_URL}/api/qr-code`, {
                           headers: { Authorization: `Bearer ${token}` }
                         });
                         setQRCodeData(res.data);
@@ -5530,7 +5530,7 @@ function App() {
                         try {
                           const token = localStorage.getItem('token');
                           console.log('Updating profile, token exists:', !!token);
-                          const res = await axios.post('${API_URL}/api/update-profile',
+                          const res = await axios.post(`${API_URL}/api/update-profile`,
                             { displayName, about, email: userEmail, phoneNumber: userPhone },
                             { headers: { Authorization: `Bearer ${token}` } }
                           );
@@ -5612,7 +5612,7 @@ function App() {
                       onClick={async () => {
                         try {
                           const token = localStorage.getItem('token');
-                          await axios.post('${API_URL}/api/privacy-settings', privacySettings, {
+                          await axios.post(`${API_URL}/api/privacy-settings`, privacySettings, {
                             headers: { Authorization: `Bearer ${token}` }
                           });
                           alert('Privacy settings updated!');
@@ -5658,7 +5658,7 @@ function App() {
                       const duration = parseInt(e.target.value);
                       try {
                         const token = localStorage.getItem('token');
-                        await axios.post('${API_URL}/api/disappearing-messages', {
+                        await axios.post(`${API_URL}/api/disappearing-messages`, {
                           chatWith: '__default__',
                           duration
                         }, { headers: { Authorization: `Bearer ${token}` } });
@@ -5710,7 +5710,7 @@ function App() {
                             const token = localStorage.getItem('token');
                             const formData = new FormData();
                             formData.append('file', file);
-                            const res = await axios.post('${API_URL}/api/upload-wallpaper', formData, {
+                            const res = await axios.post(`${API_URL}/api/upload-wallpaper`, formData, {
                               headers: {
                                 Authorization: `Bearer ${token}`
                               }
@@ -5737,7 +5737,7 @@ function App() {
                         onClick={async () => {
                           try {
                             const token = localStorage.getItem('token');
-                            await axios.post('${API_URL}/api/update-wallpaper',
+                            await axios.post(`${API_URL}/api/update-wallpaper`,
                               { wallpaper: 'default' },
                               { headers: { Authorization: `Bearer ${token}` } }
                             );
@@ -5829,7 +5829,7 @@ function App() {
                       if (confirmed) {
                         try {
                           const token = localStorage.getItem('token');
-                          await axios.delete('${API_URL}/api/delete-account', {
+                          await axios.delete(`${API_URL}/api/delete-account`, {
                             headers: { Authorization: `Bearer ${token}` }
                           });
                           alert('Your account has been deleted successfully.');
@@ -6002,7 +6002,7 @@ function App() {
                           formData.append('file', file);
                           try {
                             const token = localStorage.getItem('token');
-                            const res = await axios.post('${API_URL}/api/upload-file', formData, {
+                            const res = await axios.post(`${API_URL}/api/upload-file`, formData, {
                               headers: {
                                 Authorization: `Bearer ${token}`
                               }
@@ -6178,7 +6178,7 @@ function App() {
                             formData.append('file', file);
                             try {
                               const token = localStorage.getItem('token');
-                              const res = await axios.post('${API_URL}/api/upload-file', formData, {
+                              const res = await axios.post(`${API_URL}/api/upload-file`, formData, {
                                 headers: { Authorization: `Bearer ${token}` }
                               });
                               await updateGroupSettings(editingGroup._id, { profilePicture: res.data.fileUrl });
@@ -6660,7 +6660,7 @@ function App() {
                           }, { headers: { Authorization: `Bearer ${token}` } });
                         } else {
                           // Forward to individual
-                          await axios.post('${API_URL}/api/save-message', {
+                          await axios.post(`${API_URL}/api/save-message`, {
                             toUsername: recipientId,
                             text: messageToForward.text,
                             type: messageToForward.type || 'text',
@@ -6807,7 +6807,7 @@ function App() {
 
                           try {
                             const token = localStorage.getItem('token');
-                            const res = await axios.post('${API_URL}/api/scan-qr', {
+                            const res = await axios.post(`${API_URL}/api/scan-qr`, {
                               qrData: JSON.stringify({
                                 type: 'whatsapp-lite-contact',
                                 username: username,
@@ -6967,7 +6967,7 @@ function App() {
 
                         const token = localStorage.getItem('token');
                         console.log('Uploading status...');
-                        const res = await axios.post('${API_URL}/api/status', formData, {
+                        const res = await axios.post(`${API_URL}/api/status`, formData, {
                           headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'multipart/form-data'
@@ -7009,7 +7009,7 @@ function App() {
                     try {
                       console.log('Creating text status...');
                       const token = localStorage.getItem('token');
-                      const res = await axios.post('${API_URL}/api/status', {
+                      const res = await axios.post(`${API_URL}/api/status`, {
                         type: 'text',
                         text: statusText,
                         backgroundColor: statusBackgroundColor
