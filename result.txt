@@ -1,0 +1,1 @@
+5185:                  <Send size={16} className="text-white sm:w-5 sm:h-5 ml-1" />

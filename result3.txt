@@ -1,0 +1,2 @@
+475:  const [unreadCounts, setUnreadCounts] = useState({}); // { username: count }
+3872:              const unreadCount = unreadCounts[chat.userId] || 0;

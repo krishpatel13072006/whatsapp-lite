@@ -11,6 +11,14 @@ const emailTransporter = nodemailer.createTransport({
   }
 });
 
+if (!process.env.EMAIL_PASS || process.env.EMAIL_PASS === 'your-app-password-here') {
+  console.warn('\n⚠️  WARNING: EMAIL_PASS is not configured correctly in .env!');
+  console.warn('⚠️  To fix Password Reset emails:');
+  console.warn('⚠️  1. Go to your Google Account > Security > 2-Step Verification');
+  console.warn('⚠️  2. Create an App Password and paste it into .env as EMAIL_PASS');
+  console.warn('⚠️  3. Restart the server.\n');
+}
+
 /**
  * Send verification code email for password reset
  * @param {String} email - Recipient email address
@@ -40,7 +48,7 @@ const sendVerificationEmail = async (email, code, username) => {
         </div>
       `
     };
-    
+
     await emailTransporter.sendMail(mailOptions);
     console.log(`✅ Email sent successfully to ${email}`);
     return true;
@@ -78,7 +86,7 @@ const sendWelcomeEmail = async (email, username) => {
         </div>
       `
     };
-    
+
     await emailTransporter.sendMail(mailOptions);
     console.log(`✅ Welcome email sent to ${email}`);
     return true;
@@ -112,7 +120,7 @@ const sendNotificationEmail = async (email, subject, message) => {
         </div>
       `
     };
-    
+
     await emailTransporter.sendMail(mailOptions);
     console.log(`✅ Notification email sent to ${email}`);
     return true;

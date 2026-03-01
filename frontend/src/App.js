@@ -680,10 +680,20 @@ function App() {
 
           if ('Notification' in window && Notification.permission === 'granted' && !currentSettings.muteAll) {
             try {
-              new Notification(`New message from ${data.fromUsername || data.from}`, {
+              const notifTitle = `New message from ${data.fromUsername || data.from}`;
+              const notifOptions = {
                 body: data.text || 'Sent an attachment',
                 icon: '/logo192.png'
-              });
+              };
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.ready.then(reg => {
+                  reg.showNotification(notifTitle, notifOptions);
+                }).catch(() => {
+                  new Notification(notifTitle, notifOptions);
+                });
+              } else {
+                new Notification(notifTitle, notifOptions);
+              }
             } catch (err) {
               console.error('Error showing notification:', err);
             }
@@ -851,9 +861,43 @@ function App() {
       }));
 
       // Show notification if not in this group chat
-      if (selectedChat !== `group_${data.groupId}`) {
-        // Could add unread count for groups here
-        console.log(`New message in group ${data.groupId}`);
+      if (selectedChatRef.current !== `group_${data.groupId}`) {
+        // Increment unread count for groups
+        setUnreadCounts(prev => ({
+          ...prev,
+          [`group_${data.groupId}`]: (prev[`group_${data.groupId}`] || 0) + 1
+        }));
+
+        setNotificationSettings(currentSettings => {
+          if (!currentSettings.muteAll) {
+            if (currentSettings.sound) {
+              const audio = new Audio('/notification.mp3');
+              audio.play().catch(e => console.log('Audio play failed:', e));
+            }
+            if ('Notification' in window && Notification.permission === 'granted') {
+              try {
+                const groupName = groups.find(g => g._id === data.groupId)?.name || 'Group';
+                const notifTitle = `New message in ${groupName}`;
+                const notifOptions = {
+                  body: `${data.fromUsername}: ${data.text || 'Sent an attachment'}`,
+                  icon: '/logo192.png'
+                };
+                if ('serviceWorker' in navigator) {
+                  navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification(notifTitle, notifOptions);
+                  }).catch(() => {
+                    new Notification(notifTitle, notifOptions);
+                  });
+                } else {
+                  new Notification(notifTitle, notifOptions);
+                }
+              } catch (err) {
+                console.error('Error showing group notification:', err);
+              }
+            }
+          }
+          return currentSettings;
+        });
       }
     });
 
@@ -3812,6 +3856,7 @@ function App() {
                 const lastMessage = groupMessages[group._id]?.[groupMessages[group._id]?.length - 1];
                 const isMuted = mutedGroups[group._id] || false;
                 const isAdmin = group.admins?.includes(localStorage.getItem('username'));
+                const unreadCount = unreadCounts[`group_${group._id}`] || 0;
                 return (
                   <div
                     key={group._id}
@@ -3819,6 +3864,11 @@ function App() {
                       }`}
                     onClick={() => {
                       setSelectedChat(`group_${group._id}`);
+                      setUnreadCounts(prev => {
+                        const newCounts = { ...prev };
+                        delete newCounts[`group_${group._id}`];
+                        return newCounts;
+                      });
                     }}
                     onContextMenu={(e) => {
                       e.preventDefault();
@@ -3841,14 +3891,21 @@ function App() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-center">
-                        <p className="text-[#111b21] dark:text-white font-medium text-sm sm:text-base truncate">{group.name} {isMuted && <BellOff size={12} className="inline text-[#54656f] dark:text-gray-400" />}</p>
-                        {lastMessage?.timestamp && (
-                          <span className="text-xs text-[#54656f] dark:text-gray-400 flex-shrink-0 ml-2">
-                            {new Date(lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        )}
+                        <p className="text-[#111b21] dark:text-white font-medium text-sm sm:text-base truncate flex-1">{group.name} {isMuted && <BellOff size={12} className="inline text-[#54656f] dark:text-gray-400" />}</p>
+                        <div className="flex items-center gap-1 sm:gap-2 flex-none ml-2 min-w-fit align-right">
+                          {lastMessage?.timestamp && (
+                            <span className={`text-xs flex-shrink-0 ${unreadCount > 0 ? 'text-green-400 font-medium' : 'text-[#54656f] dark:text-gray-400'}`}>
+                              {new Date(lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          )}
+                          {unreadCount > 0 && (
+                            <span className="bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium flex-shrink-0">
+                              {unreadCount > 99 ? '99+' : unreadCount}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <p className="text-[#54656f] dark:text-gray-400 text-xs sm:text-sm truncate">
+                      <p className={`text-[#54656f] dark:text-gray-400 text-xs sm:text-sm truncate ${unreadCount > 0 ? 'font-medium text-[#111b21] dark:text-white' : ''}`}>
                         {lastMessage
                           ? `${lastMessage.fromUsername}: ${lastMessage.text || 'Sent an attachment'}`
                           : group.description || `${group.members.length} members`
@@ -4232,6 +4289,15 @@ function App() {
         <div className={`absolute bottom-14 left-0 transition-all duration-200 ${showFabMenu ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
           <div className="bg-[#233138] rounded-xl shadow-xl overflow-hidden border border-gray-300 dark:border-gray-700/50 min-w-[180px]">
             <button
+              onClick={() => { setShowAllUsers(true); setShowFabMenu(false); }}
+              className="w-full px-3 py-2.5 hover:bg-[#182229] flex items-center gap-2.5 text-[#e9edef] transition-colors border-b border-gray-600/50"
+            >
+              <div className="w-8 h-8 bg-[#00a884] rounded-full flex items-center justify-center">
+                <MessageSquare size={14} className="text-[#111b21] dark:text-white" />
+              </div>
+              <span className="text-sm">New Chat</span>
+            </button>
+            <button
               onClick={() => { setShowCreateGroup(true); setShowFabMenu(false); }}
               className="w-full px-3 py-2.5 hover:bg-[#182229] flex items-center gap-2.5 text-[#e9edef] transition-colors"
             >
@@ -4363,14 +4429,14 @@ function App() {
                   <>
                     <button
                       onClick={() => fetchPinnedMessages()}
-                      className="bg-gray-700/50 p-1.5 sm:p-2 rounded-full hover:bg-yellow-600 transition-all active:scale-95"
+                      className="hidden sm:block bg-gray-700/50 p-1.5 sm:p-2 rounded-full hover:bg-yellow-600 transition-all active:scale-95"
                       title="Pinned Messages"
                     >
                       <Pin size={16} className="text-[#111b21] dark:text-white sm:w-5 sm:h-5" />
                     </button>
                     <button
                       onClick={() => fetchUserProfile(selectedChat)}
-                      className="bg-gray-700/50 p-1.5 sm:p-2 rounded-full hover:bg-gray-700 transition-all active:scale-95"
+                      className="hidden sm:block bg-gray-700/50 p-1.5 sm:p-2 rounded-full hover:bg-gray-700 transition-all active:scale-95"
                       title="View Profile"
                     >
                       <Info size={16} className="text-[#111b21] dark:text-white sm:w-5 sm:h-5" />
@@ -4404,7 +4470,7 @@ function App() {
                           isMuted
                         });
                       }}
-                      className="bg-gray-700/50 p-1.5 sm:p-2 rounded-full hover:bg-gray-700 transition-all active:scale-95"
+                      className="bg-gray-700/50 p-1.5 sm:p-2 rounded-full hover:bg-gray-700 transition-all active:scale-95 flex-shrink-0"
                       title="More Options"
                     >
                       <MoreVertical size={16} className="text-[#111b21] dark:text-white sm:w-5 sm:h-5" />
@@ -5063,7 +5129,7 @@ function App() {
             <div className="bg-[#202c33] border-t border-gray-300 dark:border-gray-800/50 p-2 sm:p-4">
               {/* Message Input */}
               <div className="flex items-center gap-1.5 sm:gap-3">
-                <div className="flex items-center gap-0.5 sm:gap-1">
+                <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
                   <button
                     className="text-[#54656f] dark:text-gray-400 hover:text-[#111b21] dark:text-white p-1.5 sm:p-2 rounded-full hover:bg-gray-700/50 transition-colors"
                     onClick={() => setShowFileUpload(true)}
@@ -5077,7 +5143,7 @@ function App() {
                     <Smile size={20} />
                   </button>
                   <button
-                    className="flex text-[#54656f] dark:text-gray-400 hover:text-[#111b21] dark:text-white p-2 rounded-full hover:bg-gray-700/50 transition-colors"
+                    className="hidden xs:flex flex text-[#54656f] dark:text-gray-400 hover:text-[#111b21] dark:text-white p-2 rounded-full hover:bg-gray-700/50 transition-colors"
                     onClick={() => setShowStickerPicker(true)}
                   >
                     <Sticker size={20} />
@@ -5180,7 +5246,7 @@ function App() {
                       sendMessage();
                     }
                   }}
-                  className="bg-green-600 p-1.5 sm:p-3 rounded-full hover:bg-green-700 transition flex items-center justify-center"
+                  className="bg-green-600 p-1.5 sm:p-3 rounded-full hover:bg-green-700 transition flex items-center justify-center flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12"
                 >
                   <Send size={16} className="text-white sm:w-5 sm:h-5 ml-1" />
                 </button>
@@ -5997,6 +6063,55 @@ function App() {
           </div>
         )
       }
+
+      {/* New Chat Modal */}
+      {showAllUsers && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-[#202c33] rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-gray-300 dark:border-gray-700">
+            <div className="p-4 border-b border-gray-300 dark:border-gray-700 flex items-center justify-between">
+              <h2 className="text-[#111b21] dark:text-white text-lg font-medium">New Chat</h2>
+              <button
+                onClick={() => setShowAllUsers(false)}
+                className="text-[#54656f] dark:text-gray-400 hover:text-[#111b21] dark:text-white"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="space-y-2">
+                {contacts.filter(c => c.username !== localStorage.getItem('username')).map(contact => (
+                  <div
+                    key={contact.username}
+                    onClick={() => {
+                      setSelectedChat(contact.username);
+                      setShowAllUsers(false);
+                      if (!chats[contact.username]) {
+                        setChats(prev => ({ ...prev, [contact.username]: [] }));
+                      }
+                    }}
+                    className="flex items-center gap-3 p-3 hover:bg-[#2a3942] rounded-lg cursor-pointer transition-colors"
+                  >
+                    <div className="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
+                      {contact.profilePicture ? (
+                        <img src={contact.profilePicture} alt={contact.displayName} className="w-full h-full object-cover" />
+                      ) : (
+                        <User className="text-white" size={20} />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[#111b21] dark:text-white font-medium truncate">{contact.displayName || contact.username}</p>
+                      {contact.about && <p className="text-[#54656f] dark:text-gray-400 text-sm truncate">{contact.about}</p>}
+                    </div>
+                  </div>
+                ))}
+                {contacts.length <= 1 && (
+                  <p className="text-[#54656f] dark:text-gray-400 text-sm text-center py-4">No other users found</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Create Group Modal */}
       {
