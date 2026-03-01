@@ -421,6 +421,8 @@ function App() {
   const [showStatusCreator, setShowStatusCreator] = useState(false);
   const [statusText, setStatusText] = useState('');
   const [statusBackgroundColor, setStatusBackgroundColor] = useState('#25D366');
+  const [showViewersList, setShowViewersList] = useState(false);
+  const [currentStatusViewers, setCurrentStatusViewers] = useState([]);
   // Search state
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -1569,6 +1571,22 @@ function App() {
       console.log('✅ Push subscription saved to backend');
     } catch (err) {
       console.error('❌ Failed to subscribe user to push', err);
+    }
+  };
+
+  // Fetch viewers for a specific status
+  const fetchStatusViewers = async (statusId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`${API_URL}/api/status/${statusId}/viewers`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCurrentStatusViewers(res.data);
+      setShowViewersList(true);
+    } catch (err) {
+      console.error("Error fetching status viewers:", err);
+      // Fallback to empty array just in case
+      setCurrentStatusViewers([]);
     }
   };
 
@@ -6979,6 +6997,67 @@ function App() {
                 <div className="text-[#111b21] dark:text-white">Loading...</div>
               )}
             </div>
+
+            {/* Viewers Counter (Only for own status) */}
+            {currentStatusUser.username === localStorage.getItem('username') && (
+              <div
+                className="absolute bottom-8 w-full flex justify-center z-20"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  fetchStatusViewers(currentStatusUser.statuses[currentStatusIndex]._id);
+                }}
+              >
+                <div className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white mb-1"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+                  <span className="text-white text-sm font-medium">
+                    {currentStatusUser.statuses[currentStatusIndex].viewers ? currentStatusUser.statuses[currentStatusIndex].viewers.length : 0}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Viewers List Overlay */}
+            {showViewersList && (
+              <div
+                className="absolute bottom-0 left-0 right-0 bg-[#202c33] rounded-t-2xl z-30 flex flex-col transition-transform transform translate-y-0 max-h-[70vh]"
+                style={{ height: 'auto', minHeight: '40vh' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-between items-center p-4 border-b border-gray-700">
+                  <h3 className="text-white font-medium text-lg">Viewed by {currentStatusViewers.length}</h3>
+                  <button
+                    onClick={() => setShowViewersList(false)}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-2">
+                  {currentStatusViewers.length === 0 ? (
+                    <div className="flex items-center justify-center h-full mt-8">
+                      <p className="text-gray-400 text-sm">No views yet</p>
+                    </div>
+                  ) : (
+                    currentStatusViewers.map((viewer, idx) => (
+                      <div key={idx} className="flex items-center gap-4 p-3 hover:bg-[#2a3942] rounded-lg cursor-pointer">
+                        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-600 flex items-center justify-center">
+                          {viewer.profilePicture ? (
+                            <img src={viewer.profilePicture} alt={viewer.displayName} className="w-full h-full object-cover" />
+                          ) : (
+                            <User className="text-white" size={24} />
+                          )}
+                        </div>
+                        <div className="flex-1 border-b border-gray-700 pb-3">
+                          <p className="text-white font-medium">{viewer.displayName || viewer.username}</p>
+                          <p className="text-gray-400 text-sm">@{viewer.username}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )
       }
