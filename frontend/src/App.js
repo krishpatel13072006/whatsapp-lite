@@ -4,20 +4,17 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Sparkles, MeshTransmissionMaterial } from '@react-three/drei';
-import MovingParticles from './components/MovingParticles';
-import { CircleParticles, CircleMesh, SquareParticles, SquareMesh, HexagonParticles, HexagonMesh } from './components/AuthShapes';
+import { Float, Sparkles, Points, PointMaterial } from '@react-three/drei';
+import * as random from 'maath/random/dist/maath-random.esm';
+import { CircleParticles, CircleMesh } from './components/AuthShapes';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import axios from 'axios';
 import { Send, Phone, Video, MessageSquare, History, Trash2, LogOut, User, Paperclip, Mic, ArrowLeft, Settings, Image, File, Copy, X, Check, Smile, Info, Sticker, Bell, BellOff, Ban, UserX, Users, UserPlus, Search, Star, Reply, Edit, Pin, Clock, Palette, Plus, Compass, MoreVertical } from 'lucide-react';
 import EmojiPicker, { EmojiStyle } from 'emoji-picker-react';
 import SkeletonLoader from './components/SkeletonLoader';
-import WelcomeScene3D from './components/WelcomeScene3D';
 import EmptyChatScene3D from './components/EmptyChatScene3D';
 import AuthScene3D from './components/AuthScene3D';
-import LoginForm from './components/auth/LoginForm';
-import RegisterForm from './components/auth/RegisterForm';
 import LandingPage from './components/LandingPage';
 import './animations.css';
 

@@ -1,10 +1,9 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 
 const KineticGrid = () => {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const animFrameRef = useRef(null);
-  const [dims, setDims] = useState({ w: 0, h: 0 });
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -100,7 +99,6 @@ const KineticGrid = () => {
         canvas.style.height = rect.height + 'px';
         const ctx = canvas.getContext('2d');
         if (ctx) ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        setDims({ w: rect.width, h: rect.height });
       }
     };
 
