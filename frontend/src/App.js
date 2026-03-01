@@ -5556,6 +5556,28 @@ function App() {
                   </div>
                 </div>
 
+                {/* App Theme Section */}
+                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                  <h3 className="text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
+                    <Palette size={18} className="sm:w-5 sm:h-5" />
+                    App Theme
+                  </h3>
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => updateTheme('dark-theme')}
+                      className={`flex-1 py-2 sm:py-3 rounded-lg border-2 transition ${theme === 'dark-theme' ? 'border-green-500 bg-[#2a3942]' : 'border-gray-600 hover:border-gray-400'}`}
+                    >
+                      <div className="text-white font-medium text-sm sm:text-base">Dark</div>
+                    </button>
+                    <button
+                      onClick={() => updateTheme('light-theme')}
+                      className={`flex-1 py-2 sm:py-3 rounded-lg border-2 transition ${theme === 'light-theme' ? 'border-green-500 bg-[#e5ddd5]' : 'border-gray-600 hover:border-gray-400'}`}
+                    >
+                      <div className={`font-medium text-sm sm:text-base ${theme === 'light-theme' ? 'text-black' : 'text-white'}`}>Light</div>
+                    </button>
+                  </div>
+                </div>
+
                 {/* Privacy Settings Section */}
                 <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">

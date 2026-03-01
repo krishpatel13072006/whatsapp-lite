@@ -1484,11 +1484,14 @@ app.post('/api/upload-file', authenticateToken, upload.single('file'), async (re
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-    const fileUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    const fileUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     const fileType = req.file.mimetype.startsWith('image/') ? 'image' : 'file';
 
     res.json({ fileUrl, fileName: req.file.originalname, fileType });
   } catch (error) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ message: "File is too large. Maximum size is 5MB." });
+    }
     res.status(500).json({ message: "Error uploading file", error: error.message });
   }
 });
@@ -1548,7 +1551,7 @@ app.post('/api/save-call', authenticateToken, upload.single('video'), async (req
       receiverUsername: req.body.receiverUsername,
       callType: req.body.callType || 'video',
       duration: req.body.duration || 0,
-      recordingUrl: req.file ? `uploads/${req.file.filename}` : null,
+      recordingUrl: req.file ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}` : null,
       status: req.body.status || 'completed'
     });
 
@@ -1556,6 +1559,9 @@ app.post('/api/save-call', authenticateToken, upload.single('video'), async (req
     console.log(`✅ Call logged: ${req.user.username} → ${req.body.receiverUsername}`);
     res.json({ success: true, callLogId: callLog._id });
   } catch (error) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ success: false, error: "File is too large. Maximum size is 5MB." });
+    }
     console.error('Error saving call:', error.message);
     res.status(500).json({ success: false, error: error.message });
   }
@@ -1672,6 +1678,18 @@ app.delete('/api/delete-account', authenticateToken, async (req, res) => {
     });
     console.log(`Deleted ${themeResult.deletedCount} chat themes`);
 
+    // Delete statuses (stories) the user posted
+    const statusResult = await Status.deleteMany({
+      username: currentUsername
+    });
+    console.log(`Deleted ${statusResult.deletedCount} statuses`);
+
+    // Delete active password reset codes
+    const resetCodeResult = await ResetCode.deleteMany({
+      username: currentUsername
+    });
+    console.log(`Deleted ${resetCodeResult.deletedCount} reset codes`);
+
     // Delete profile picture file if exists
     const user = await User.findOne({ username: currentUsername });
     if (user && user.profilePicture) {
@@ -1738,7 +1756,7 @@ app.post('/api/status', authenticateToken, upload.single('file'), async (req, re
     const status = new Status({
       username,
       type,
-      fileUrl: req.file ? `/uploads/${req.file.filename}` : null,
+      fileUrl: req.file ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}` : null,
       text: text || null,
       caption: caption || null,
       backgroundColor: backgroundColor || '#25D366',
@@ -1961,7 +1979,7 @@ app.post('/api/upload-wallpaper', authenticateToken, upload.single('file'), asyn
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    const fileUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
     // Update user's wallpaper in database
     await User.findOneAndUpdate(
@@ -1971,6 +1989,9 @@ app.post('/api/upload-wallpaper', authenticateToken, upload.single('file'), asyn
 
     res.json({ message: "Wallpaper updated successfully", wallpaperUrl: fileUrl });
   } catch (error) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ message: "File is too large. Maximum size is 5MB." });
+    }
     res.status(500).json({ message: "Error uploading wallpaper", error: error.message });
   }
 });
@@ -3223,7 +3244,7 @@ app.post('/api/upload-audio', authenticateToken, upload.single('audio'), (req, r
   if (!req.file) {
     return res.status(400).json({ message: 'No audio file uploaded' });
   }
-  const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  const fileUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
   res.json({
     fileUrl,
     fileName: req.file.originalname,
