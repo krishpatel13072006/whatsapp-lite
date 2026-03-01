@@ -238,6 +238,11 @@ function App() {
     const savedTheme = localStorage.getItem('whatsappTheme') || 'dark-theme';
     setTheme(savedTheme);
     document.documentElement.classList.add(savedTheme);
+    if (savedTheme === 'dark-theme') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
   // Add particles to the DOM
@@ -315,6 +320,11 @@ function App() {
   const updateTheme = (newTheme) => {
     document.documentElement.classList.remove(theme);
     document.documentElement.classList.add(newTheme);
+    if (newTheme === 'dark-theme') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
     setTheme(newTheme);
     localStorage.setItem('whatsappTheme', newTheme);
   };
@@ -3347,7 +3357,7 @@ function App() {
 
   // Main App - WhatsApp Style Layout
   return (
-    <div className="flex h-screen bg-[#0b141a] overflow-hidden">
+    <div className="flex h-screen bg-[#f0f2f5] dark:bg-[#0b141a] overflow-hidden">
       {/* Left Sidebar - Chat List */}
       <div className={`${selectedChat ? 'hidden md:flex' : 'flex'} w-full md:w-[400px] lg:w-[420px] flex-col bg-[#111b21] border-r border-gray-300 dark:border-gray-800/50`}>
         {/* Header */}
