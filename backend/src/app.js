@@ -16,7 +16,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+  origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite-12311.netlify.app", "https://wahtsapplite-12311.netlify.app"],
   methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   credentials: true
 }));
@@ -33,8 +33,8 @@ const server = http.createServer(app);
 
 // Initialize Socket.io
 const io = new Server(server, {
-  cors: { 
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"], 
+  cors: {
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://whatsapp-lite-12311.netlify.app", "https://wahtsapplite-12311.netlify.app"],
     methods: ["GET", "POST", "DELETE"],
     credentials: true
   }
@@ -43,7 +43,7 @@ const io = new Server(server, {
 // Socket.io connection handling
 io.on('connection', (socket) => {
   console.log(`🔌 New socket connection: ${socket.id}`);
-  
+
   // Handle user coming online
   socket.on('user-online', async (username) => {
     try {
@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
       );
       socket.username = username;
       console.log(`✅ User online: ${username} (${socket.id})`);
-      
+
       // Broadcast to all clients that this user is online
       io.emit('user-status', { username, isOnline: true });
     } catch (error) {
@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
           { isOnline: false, lastSeen: new Date(), socketId: null }
         );
         console.log(`👋 User offline: ${socket.username}`);
-        
+
         // Broadcast to all clients that this user is offline
         io.emit('user-status', { username: socket.username, isOnline: false });
       }
@@ -84,8 +84,8 @@ io.on('connection', (socket) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
@@ -94,9 +94,9 @@ app.get('/health', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);
-  res.status(500).json({ 
-    message: 'Internal server error', 
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined 
+  res.status(500).json({
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 
@@ -107,7 +107,7 @@ const startServer = async () => {
   try {
     // Connect to MongoDB
     await connectDB();
-    
+
     // Start listening
     server.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
