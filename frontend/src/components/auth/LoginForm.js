@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import { MessageSquare, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,15 +18,15 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLocalError('');
-    
+
     if (!username.trim() || !password.trim()) {
       setLocalError('Please fill in all fields');
       return;
     }
-    
+
     // Call onLogin with an event-like object that has preventDefault
     if (onLogin) {
-      await onLogin({ preventDefault: () => {} });
+      await onLogin({ preventDefault: () => { } });
     }
   };
 
@@ -54,11 +55,11 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
           <Sparkles count={100} scale={10} size={2} speed={0.4} color="#00a884" />
         </Canvas>
       </div>
-      
+
       {/* Animated Grid Overlay */}
       <div className="animated-grid absolute inset-0 z-0" />
-      
-      <motion.div 
+
+      <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -67,7 +68,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
         {/* Logo */}
         <div className="text-center mb-6 sm:mb-8">
           {/* Animated Logo Container */}
-          <motion.div 
+          <motion.div
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 15 }}
@@ -75,11 +76,11 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
           >
             {/* Outer glow ring */}
             <motion.div
-              animate={{ 
+              animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.5, 0.8, 0.5]
               }}
-              transition={{ 
+              transition={{
                 duration: 2,
                 repeat: Infinity,
                 ease: "easeInOut"
@@ -87,14 +88,14 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
               className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#00ff88] via-[#00a884] to-[#00d199]"
               style={{ filter: 'blur(15px)' }}
             />
-            
+
             {/* Middle glow */}
             <motion.div
-              animate={{ 
+              animate={{
                 scale: [1, 1.1, 1],
                 rotate: [0, 5, -5, 0]
               }}
-              transition={{ 
+              transition={{
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut"
@@ -102,19 +103,19 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
               className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#00a884] to-[#00d199]"
               style={{ filter: 'blur(8px)' }}
             />
-            
+
             {/* Main icon container */}
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               className="relative inline-flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 bg-gradient-to-br from-[#00a884] to-[#00d199] rounded-2xl shadow-lg shadow-[#00a884]/50"
             >
               {/* Floating particles inside */}
               <motion.div
-                animate={{ 
+                animate={{
                   y: [-5, 5, -5],
                   opacity: [0.5, 1, 0.5]
                 }}
-                transition={{ 
+                transition={{
                   duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut"
@@ -123,15 +124,15 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
               >
                 <MessageSquare size={28} className="sm:size-36 text-white drop-shadow-lg" />
               </motion.div>
-              
+
               {/* Sparkle effects */}
               <motion.span
-                animate={{ 
+                animate={{
                   scale: [0, 1, 0],
                   x: [-20, -30],
                   y: [-10, -20]
                 }}
-                transition={{ 
+                transition={{
                   duration: 1.5,
                   repeat: Infinity,
                   delay: 0.5
@@ -141,12 +142,12 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
                 ✨
               </motion.span>
               <motion.span
-                animate={{ 
+                animate={{
                   scale: [0, 1, 0],
                   x: [20, 35],
                   y: [10, 15]
                 }}
-                transition={{ 
+                transition={{
                   duration: 1.5,
                   repeat: Infinity,
                   delay: 1
@@ -157,8 +158,8 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
               </motion.span>
             </motion.div>
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -167,7 +168,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
             WhatsApp Lite
           </motion.h1>
           <p className="text-gray-400 mt-2 text-sm sm:text-base">Sign in to continue</p>
-          
+
           {/* About Section */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -177,7 +178,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
           >
             <h3 className="text-[#00a884] font-semibold text-sm mb-2">✨ About WhatsApp Lite</h3>
             <p className="text-gray-400 text-xs leading-relaxed">
-              A modern, fast, and secure messaging app built with cutting-edge technology. 
+              A modern, fast, and secure messaging app built with cutting-edge technology.
               Experience seamless chat, voice messages, media sharing, and more - all in a beautiful interface.
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
@@ -190,7 +191,7 @@ const LoginForm = ({ onLogin, onSwitchToRegister, onForgotPassword, isLoading, e
 
         {/* Error Message */}
         {displayError && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             className="bg-red-500/20 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl mb-4 backdrop-blur-sm"

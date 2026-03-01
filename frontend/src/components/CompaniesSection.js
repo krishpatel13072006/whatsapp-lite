@@ -1,16 +1,5 @@
 import React from 'react';
 
-const COLORS = ['#00c2ff', '#ffc640', '#e54cff', '#ff6b6b', '#00ffb3', '#a78bfa', '#38bdf8', '#fb923c'];
-
-const ColorText = ({ text }) => (
-    <>
-        {text.split('').map((char, i) => (
-            <span key={i} style={{ color: char === ' ' ? 'inherit' : COLORS[i % COLORS.length] }}>
-                {char}
-            </span>
-        ))}
-    </>
-);
 
 const companies = [
     {

@@ -68,7 +68,7 @@ const ContactSection = () => {
             </p>
             <div className="flex gap-3 md:gap-4">
               {[Github, Mail, MapPin].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+                <a key={i} href="#!" className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
                   <Icon size={16} />
                 </a>
               ))}
@@ -135,8 +135,8 @@ const ContactSection = () => {
                   whileTap={{ scale: 0.98 }}
                   disabled={status === 'sending'}
                   className={`w-full py-3 md:py-3.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-colors ${status === 'sending'
-                      ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                      : 'bg-primary text-primary-foreground hover:brightness-110 shadow-lg shadow-primary/20'
+                    ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                    : 'bg-primary text-primary-foreground hover:brightness-110 shadow-lg shadow-primary/20'
                     }`}
                 >
                   {status === 'sending' ? <><span className="animate-spin">⟳</span> Sending...</> : <>Send Message <Send size={16} /></>}

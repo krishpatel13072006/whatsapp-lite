@@ -2,17 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
-const COLORS = ['#00c2ff', '#ffc640', '#e54cff', '#ff6b6b', '#00ffb3', '#a78bfa', '#38bdf8', '#fb923c'];
-
-const ColorText = ({ text }) => (
-  <>
-    {text.split('').map((char, i) => (
-      <span key={i} style={{ color: char === ' ' ? 'inherit' : COLORS[i % COLORS.length] }}>
-        {char}
-      </span>
-    ))}
-  </>
-);
 
 const FAQ = [
   { q: "Is WhatsApp-Lite free to use?", a: "Yes! The basic version is completely free. We offer optional paid plans for power users." },

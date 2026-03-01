@@ -124,15 +124,6 @@ function Scene3D() {
 }
 
 /* ─── Feature Chips Data ───────────────────────────────────────────── */
-
-const FEATURES = [
-    { icon: '🔒', text: 'End-to-end encrypted' },
-    { icon: '⚡', text: 'Real-time messaging' },
-    { icon: '📱', text: 'Works seamlessly' },
-];
-
-/* ─── Floating chat bubbles that drift upward ─────────────────────── */
-
 const BUBBLES = [
     { text: 'Hey there! 👋', delay: 0, x: -40 },
     { text: 'How are you? 😊', delay: 1.2, x: 60 },
@@ -163,7 +154,7 @@ function FloatingBubbles() {
 
 export default function EmptyChatScene3D() {
     const [mounted, setMounted] = useState(false);
-    const [sceneLoaded, setSceneLoaded] = useState(false); // Added sceneLoaded state
+    const sceneLoaded = true; // Added sceneLoaded state
     useEffect(() => { setMounted(true); }, []);
 
     return (
