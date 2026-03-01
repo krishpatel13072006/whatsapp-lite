@@ -29,7 +29,6 @@ const HeroSection = ({ onGetStarted }) => {
       const { outcome } = await prompt.userChoice;
       if (outcome === 'accepted') {
         setDeferredPrompt(null);
-        setIsInstallable(false);
       }
     } else {
       // Fallback: show alert with instructions
@@ -46,7 +45,6 @@ const HeroSection = ({ onGetStarted }) => {
         const { outcome } = await prompt.userChoice;
         if (outcome === 'accepted') {
           setDeferredPrompt(null);
-          setIsInstallable(false);
           return;
         }
       } catch (err) {

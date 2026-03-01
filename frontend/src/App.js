@@ -1392,7 +1392,7 @@ function App() {
       setUserEmail(res.data.email || '');
       setUserPhone(res.data.phoneNumber || res.data.phone || '');
       setDisplayName(res.data.displayName || '');
-      setAbout(res.data.about || 'Hey there! I am using WhatsApp-Lite');
+      setAbout(res.data.about || 'Hey there! I am using SparkChat');
       setProfilePicture(res.data.profilePicture || '');
       setPrivacySettings(res.data.privacySettings || {
         lastSeen: 'everyone',
@@ -3414,7 +3414,7 @@ function App() {
     ...recentChats.map(user => ({ userId: user.username, lastMessage: '', lastTime: null, fromDb: true }))
   ].map(item => [item.userId, item])).values()];
 
-  // Main App - WhatsApp Style Layout
+  // Main App - SparkChat Style Layout
   return (
     <div className="flex h-screen bg-[#f0f2f5] dark:bg-[#0b141a] overflow-hidden">
       {/* Left Sidebar - Chat List */}
@@ -5523,7 +5523,7 @@ function App() {
                         type="text"
                         value={about}
                         onChange={(e) => setAbout(e.target.value)}
-                        placeholder="Hey there! I am using WhatsApp-Lite"
+                        placeholder="Hey there! I am using SparkChat"
                         maxLength={139}
                         className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       />
@@ -5562,7 +5562,7 @@ function App() {
                           // Update local state with response data
                           if (res.data.user) {
                             setDisplayName(res.data.user.displayName || '');
-                            setAbout(res.data.user.about || 'Hey there! I am using WhatsApp-Lite');
+                            setAbout(res.data.user.about || 'Hey there! I am using SparkChat');
                             setUserEmail(res.data.user.email || '');
                             setUserPhone(res.data.user.phoneNumber || '');
                             setProfilePicture(res.data.user.profilePicture || '');
@@ -6531,7 +6531,7 @@ function App() {
                             )}
                           </div>
                           <p className="text-[#54656f] dark:text-gray-400 text-xs truncate">@{memberName}</p>
-                          <p className="text-gray-500 text-xs truncate">{memberContact?.about || 'Hey there! I am using WhatsApp-Lite'}</p>
+                          <p className="text-gray-500 text-xs truncate">{memberContact?.about || 'Hey there! I am using SparkChat'}</p>
                         </div>
                       </div>
                     );
@@ -6855,7 +6855,7 @@ function App() {
                             const token = localStorage.getItem('token');
                             const res = await axios.post(`${API_URL}/api/scan-qr`, {
                               qrData: JSON.stringify({
-                                type: 'whatsapp-lite-contact',
+                                type: 'spark-chat-contact',
                                 username: username,
                                 timestamp: Date.now()
                               })
@@ -7309,7 +7309,7 @@ function App() {
                       const url = URL.createObjectURL(blob);
                       const a = document.createElement('a');
                       a.href = url;
-                      a.download = `whatsapp-messages-${new Date().toISOString().split('T')[0]}.txt`;
+                      a.download = `spark-messages-${new Date().toISOString().split('T')[0]}.txt`;
                       a.click();
                       URL.revokeObjectURL(url);
                     }}

@@ -3,7 +3,7 @@ import React from 'react';
 const TextBlock = () => (
   <div className="flex items-center justify-around w-max">
     <span className="text-xl md:text-2xl font-black text-white uppercase mx-6 tracking-widest hover:text-blue-400 transition-colors duration-300">
-      whatsapplite
+      sparkchat
     </span>
     <span className="text-lg md:text-xl text-blue-400 mx-4 animate-spin-slow-mq">✨</span>
     <span className="text-xl md:text-2xl font-black text-white uppercase mx-6 tracking-widest hover:text-blue-400 transition-colors duration-300">
@@ -11,7 +11,7 @@ const TextBlock = () => (
     </span>
     <span className="text-lg md:text-xl text-blue-400 mx-4 animate-spin-slow-mq">✨</span>
     <span className="text-xl md:text-2xl font-black text-white uppercase mx-6 tracking-widest hover:text-blue-400 transition-colors duration-300">
-      whatsapplite
+      sparkchat
     </span>
     <span className="text-lg md:text-xl text-blue-400 mx-4 animate-spin-slow-mq">✨</span>
     <span className="text-xl md:text-2xl font-black text-white uppercase mx-6 tracking-widest hover:text-blue-400 transition-colors duration-300">

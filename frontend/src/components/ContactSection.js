@@ -34,7 +34,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1">Email us</h4>
-                  <p className="text-muted-foreground text-sm">engineering@whatsapplite.io</p>
+                  <p className="text-muted-foreground text-sm">engineering@sparkchat.io</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">

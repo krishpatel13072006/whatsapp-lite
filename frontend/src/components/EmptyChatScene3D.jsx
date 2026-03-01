@@ -243,7 +243,7 @@ export default function EmptyChatScene3D() {
                             className="text-3xl sm:text-4xl font-extrabold text-white mb-3 tracking-tight"
                             style={{ textShadow: '0 4px 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,168,132,0.4)' }}
                         >
-                            WhatsApp Lite
+                            SparkChat
                         </motion.h2>
 
                         {/* Subtitle */}

@@ -1,5 +1,5 @@
-// Service Worker for WhatsAppLite PWA
-const CACHE_NAME = 'whatsapp-lite-v1';
+// Service Worker for SparkChat PWA
+const CACHE_NAME = 'spark-chat-v1';
 const urlsToCache = [
   '/',
   '/index.html',
