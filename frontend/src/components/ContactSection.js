@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle, Github, Mail, MapPin } from 'lucide-react';
+import { Send, CheckCircle, Mail, MapPin } from 'lucide-react';
 
 const ContactSection = () => {
   const [formState, setFormState] = useState('idle'); // idle, loading, success

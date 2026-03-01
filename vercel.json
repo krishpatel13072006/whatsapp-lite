@@ -22,6 +22,7 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://whatsapp-lite-1-w8qo.onrender.com"
+    "REACT_APP_API_URL": "https://whatsapp-lite-1-w8qo.onrender.com",
+    "CI": "false"
   }
 }
