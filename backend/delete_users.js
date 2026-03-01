@@ -1,0 +1,1 @@
+use whatsapp-clone; db.users.deleteMany({ username: { $in: ['priya_pacnahl', 'angel_priya'] } }); db.messages.deleteMany({ fromUsername: { $in: ['priya_pacnahl', 'angel_priya'] } }); db.messages.deleteMany({ toUsername: { $in: ['priya_pacnahl', 'angel_priya'] } });

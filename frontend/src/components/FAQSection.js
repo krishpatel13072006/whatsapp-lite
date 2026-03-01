@@ -35,8 +35,8 @@ const FAQSection = () => {
         >
           <span className="section-label">FAQ</span>
           <div className="mt-4 mb-4">
-            <h2 className="text-4xl md:text-5xl font-display font-bold">
-              <ColorText text="Frequently Asked Questions" />
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white">
+              Frequently Asked Questions
             </h2>
           </div>
         </motion.div>

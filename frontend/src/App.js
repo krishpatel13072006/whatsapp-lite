@@ -7,7 +7,7 @@ import { CircleParticles, CircleMesh, SquareParticles, SquareMesh, HexagonPartic
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import axios from 'axios';
-import { Send, Phone, Video, MessageSquare, History, Trash2, LogOut, User, Paperclip, Mic, ArrowLeft, Settings, Image, File, Copy, X, Check, Smile, Info, Sticker, Bell, BellOff, Ban, UserX, Users, UserPlus, Search, Star, Reply, Edit, Pin, Clock, Palette, Plus, Compass } from 'lucide-react';
+import { Send, Phone, Video, MessageSquare, History, Trash2, LogOut, User, Paperclip, Mic, ArrowLeft, Settings, Image, File, Copy, X, Check, Smile, Info, Sticker, Bell, BellOff, Ban, UserX, Users, UserPlus, Search, Star, Reply, Edit, Pin, Clock, Palette, Plus, Compass, MoreVertical } from 'lucide-react';
 import EmojiPicker, { EmojiStyle } from 'emoji-picker-react';
 import SkeletonLoader from './components/SkeletonLoader';
 import WelcomeScene3D from './components/WelcomeScene3D';
@@ -182,6 +182,8 @@ function App() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPhone, setRegisterPhone] = useState('');
   const [error, setError] = useState('');
 
   // Password reset states
@@ -244,6 +246,17 @@ function App() {
       document.documentElement.classList.remove('dark');
     }
   }, []);
+
+  // Request Notification Permission
+  useEffect(() => {
+    if (isLoggedIn && 'Notification' in window) {
+      if (Notification.permission === 'default') {
+        Notification.requestPermission().then(permission => {
+          console.log('Notification permission:', permission);
+        });
+      }
+    }
+  }, [isLoggedIn]);
 
   // Add particles to the DOM
   const addParticles = () => {
@@ -672,11 +685,24 @@ function App() {
         }));
       }
 
-      // Play notification sound
+      // Play notification sound and show browser notification
       setNotificationSettings(currentSettings => {
-        if (currentSettings.sound && !currentSettings.muteAll && selectedChatRef.current !== chatKey) {
-          const audio = new Audio('/notification.mp3');
-          audio.play().catch(e => console.log('Audio play failed:', e));
+        if (selectedChatRef.current !== chatKey) {
+          if (currentSettings.sound && !currentSettings.muteAll) {
+            const audio = new Audio('/notification.mp3');
+            audio.play().catch(e => console.log('Audio play failed:', e));
+          }
+
+          if ('Notification' in window && Notification.permission === 'granted' && !currentSettings.muteAll) {
+            try {
+              new Notification(`New message from ${data.fromUsername || data.from}`, {
+                body: data.text || 'Sent an attachment',
+                icon: '/logo192.png'
+              });
+            } catch (err) {
+              console.error('Error showing notification:', err);
+            }
+          }
         }
         return currentSettings;
       });
@@ -1250,11 +1276,18 @@ function App() {
     setIsAuthLoading(true);
     setError('');
     try {
-      await axios.post(`${API_URL}/api/register`, { username, password });
+      await axios.post(`${API_URL}/api/register`, {
+        username,
+        password,
+        email: registerEmail,
+        phoneNumber: registerPhone
+      });
       console.log('Registration successful for:', username);
       setIsRegistering(false);
       setUsername('');
       setPassword('');
+      setRegisterEmail('');
+      setRegisterPhone('');
       // Show success message and stay on register page
       alert('✅ Account created successfully!\n\nNow please sign in with your new credentials.');
     } catch (err) {
@@ -3097,7 +3130,7 @@ function App() {
 
           {/* 3D Animated Background */}
           <div className="absolute inset-0 z-0">
-            <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+            <Canvas camera={{ position: [0, 0, 5], fov: 75 }} dpr={[1, 2]} performance={{ min: 0.5 }}>
               <ambientLight intensity={0.5} />
               <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                 {/* Same sphere for Forgot Password */}
@@ -3269,7 +3302,7 @@ function App() {
 
         {/* 3D Animated Background */}
         <div className="absolute inset-0 z-0">
-          <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+          <Canvas camera={{ position: [0, 0, 5], fov: 75 }} dpr={[1, 2]} performance={{ min: 0.5 }}>
             <ambientLight intensity={0.5} />
             <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
               {isRegistering ? (
@@ -3318,6 +3351,28 @@ function App() {
                 required
               />
             </div>
+            {isRegistering && (
+              <>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email (optional)"
+                    value={registerEmail}
+                    onChange={(e) => setRegisterEmail(e.target.value)}
+                    className="w-full bg-[#2a3942]/80 backdrop-blur-sm p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-400 outline-none border border-gray-300 dark:border-gray-700/50 focus:border-green-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Phone Number (optional)"
+                    value={registerPhone}
+                    onChange={(e) => setRegisterPhone(e.target.value)}
+                    className="w-full bg-[#2a3942]/80 backdrop-blur-sm p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-400 outline-none border border-gray-300 dark:border-gray-700/50 focus:border-green-500 transition-all"
+                  />
+                </div>
+              </>
+            )}
             <div>
               <input
                 type="password"
@@ -3449,8 +3504,8 @@ function App() {
                 <Pin className="text-[#aebac1] group-hover:text-yellow-400 transition-colors" size={20} />
               </button>
               <button
-                className="p-2 rounded-full hover:bg-[#374248] transition-colors group"
-                onClick={() => setShowThemePicker(true)}
+                className="p-2 rounded-full hover:bg-[#374248] transition-colors group relative z-50 pointer-events-auto"
+                onClick={(e) => { e.stopPropagation(); setShowThemePicker(true); }}
                 title="Chat Theme"
               >
                 <Palette className="text-[#aebac1] group-hover:text-purple-400 transition-colors" size={20} />
@@ -3583,7 +3638,11 @@ function App() {
                     <div className={`w-14 h-14 rounded-full ${hasStatuses ? 'p-[3px] bg-gradient-to-tr from-green-400 to-green-600' : 'bg-[#2a3942]'} flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105`}>
                       <div className={`w-full h-full ${hasStatuses ? 'bg-[#111b21] rounded-full p-[2px]' : ''} flex items-center justify-center overflow-hidden`}>
                         {profilePicture ? (
-                          <img src={profilePicture} alt="My Status" className="w-full h-full object-cover rounded-full" />
+                          <img
+                            src={profilePicture}
+                            alt="My Status"
+                            className="w-full h-full object-cover"
+                          />
                         ) : (
                           <User className="text-[#54656f] dark:text-gray-400" size={24} />
                         )}
@@ -3754,82 +3813,10 @@ function App() {
         </div>
 
         {/* Chat List */}
-        <div className="flex-1 overflow-y-auto">
-          {/* All Registered Users Section */}
-          {showAllUsers && (
-            <div className="bg-[#111b21]">
-              <div className="px-4 py-2 text-[11px] text-[#8696a0] uppercase tracking-wider font-medium">All Registered Users ({contacts.length})</div>
-              {contacts.length === 0 ? (
-                <div className="px-4 py-6 text-center text-[#8696a0] text-sm">No registered users found</div>
-              ) : (
-                contacts.map((contact) => {
-                  const currentUsername = localStorage.getItem('username');
-                  if (contact.username === currentUsername) return null;
-                  const isBlocked = blockedContacts.some(b => b.username === contact.username);
-                  return (
-                    <div
-                      key={contact.username}
-                      className="px-3 py-2 hover:bg-[#202c33] cursor-pointer flex items-center gap-3 border-b border-gray-300 dark:border-gray-800/30"
-                      onClick={() => {
-                        setSelectedChat(contact.username);
-                        setChats(prev => ({ ...prev, [contact.username]: prev[contact.username] || [] }));
-                        setShowAllUsers(false);
-                      }}
-                    >
-                      <div className="w-12 h-12 bg-[#00a884] rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        {contact.profilePicture ? (
-                          <>
-                            <img
-                              src={contact.profilePicture}
-                              alt={contact.username}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            <div className="w-full h-full items-center justify-center hidden bg-[#00a884]">
-                              <span className="text-[#111b21] dark:text-white font-medium">{(contact.username || '?').charAt(0).toUpperCase()}</span>
-                            </div>
-                          </>
-                        ) : (
-                          <span className="text-[#111b21] dark:text-white font-medium">{(contact.username || '?').charAt(0).toUpperCase()}</span>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="text-[#e9edef] font-medium text-sm">{contact.displayName || contact.username}</p>
-                          {isBlocked && <Ban size={12} className="text-red-400" />}
-                        </div>
-                        <p className="text-[#8696a0] text-xs truncate">{contact.about || 'Hey there! I am using WhatsApp'}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {contact.isOnline ? (
-                          <span className="w-2.5 h-2.5 bg-[#00a884] rounded-full"></span>
-                        ) : (
-                          <span className="w-2.5 h-2.5 bg-[#8696a0] rounded-full"></span>
-                        )}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            fetchUserProfile(contact.username);
-                          }}
-                          className="p-1.5 hover:bg-[#374248] rounded-full transition-colors"
-                          title="View Profile"
-                        >
-                          <Info size={16} className="text-[#8696a0]" />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          )}
+        <div className="flex-1 overflow-y-auto w-full max-w-full">
 
           {/* Groups Section */}
-          {groups.length > 0 && !showAllUsers && (
+          {groups.length > 0 && (
             <div className="bg-[#111b21]">
               <div className="px-4 py-2 text-[11px] text-[#8696a0] uppercase tracking-wider font-medium flex items-center gap-2">
                 <Users size={12} />
@@ -3888,12 +3875,12 @@ function App() {
             </div>
           )}
 
-          {chatList.length === 0 && !showAllUsers ? (
+          {chatList.length === 0 ? (
             <div className="p-4 text-center text-[#54656f] dark:text-gray-400">
-              <p className="text-sm sm:text-base">No chats yet</p>
-              <p className="text-xs sm:text-sm mt-2">Click "Show All Registered Users" above to start chatting</p>
+              <p className="text-sm sm:text-base">No chats yet.</p>
+              <p className="text-xs sm:text-sm mt-2">Search for a contact above to start chatting.</p>
             </div>
-          ) : !showAllUsers && (
+          ) : (
             chatList.map((chat, index) => {
               const contactInfo = contacts.find(c => c.username === chat.userId);
               const unreadCount = unreadCounts[chat.userId] || 0;
@@ -3969,11 +3956,11 @@ function App() {
                     }}
                   >
                     <div className="flex justify-between items-center">
-                      <p className="text-[#111b21] dark:text-white font-medium text-sm sm:text-base truncate">{contactInfo?.displayName || chat.userId}</p>
-                      <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
+                      <p className="text-[#111b21] dark:text-white font-medium text-sm sm:text-base truncate flex-1">{contactInfo?.displayName || chat.userId}</p>
+                      <div className="flex items-center gap-1 sm:gap-2 flex-none ml-2 min-w-fit align-right">
                         {isMuted && <BellOff size={12} className="text-[#54656f] dark:text-gray-400" />}
                         {chat.lastTime && (
-                          <span className={`text-xs flex-shrink-0 ${unreadCount > 0 ? 'text-green-400' : 'text-[#54656f] dark:text-gray-400'}`}>
+                          <span className={`text-xs ${unreadCount > 0 ? 'text-green-400 font-medium' : 'text-[#54656f] dark:text-gray-400'}`}>
                             {new Date(chat.lastTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         )}
@@ -4237,7 +4224,7 @@ function App() {
             {isAdmin && (
               <button
                 onClick={async () => {
-                  const confirmed = window.confirm('Are you sure you want to DELETE this group? This will remove all members and delete all messages permanently. This action cannot be undone!');
+                  const confirmed = window.confirm('Are you sure you want to DELETE this group? This action cannot be undone and will remove all messages.');
                   if (confirmed) {
                     await deleteGroup(groupOptionsMenu.groupId);
                   }
@@ -4266,15 +4253,6 @@ function App() {
                 <Users size={14} className="text-[#111b21] dark:text-white" />
               </div>
               <span className="text-sm">Create Group</span>
-            </button>
-            <button
-              onClick={() => { setShowAllUsers(!showAllUsers); setShowFabMenu(false); }}
-              className="w-full px-3 py-2.5 hover:bg-[#182229] flex items-center gap-2.5 text-[#e9edef] transition-colors border-t border-gray-300 dark:border-gray-700/30"
-            >
-              <div className="w-8 h-8 bg-[#00a884] rounded-full flex items-center justify-center">
-                <User size={14} className="text-[#111b21] dark:text-white" />
-              </div>
-              <span className="text-sm">All Users</span>
             </button>
           </div>
         </div>
@@ -4424,6 +4402,26 @@ function App() {
                       title="Video Call"
                     >
                       <Video size={16} className="text-[#111b21] dark:text-white sm:w-5 sm:h-5" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const isBlocked = blockedContacts.some(b => b.username === selectedChat);
+                        const isMuted = mutedChats[selectedChat] || false;
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        setChatOptionsMenu({
+                          show: !chatOptionsMenu.show,
+                          x: Math.min(rect.left - 100, window.innerWidth - 150),
+                          y: Math.min(rect.bottom + 5, window.innerHeight - 200),
+                          userId: selectedChat,
+                          isBlocked,
+                          isMuted
+                        });
+                      }}
+                      className="bg-gray-700/50 p-1.5 sm:p-2 rounded-full hover:bg-gray-700 transition-all active:scale-95"
+                      title="More Options"
+                    >
+                      <MoreVertical size={16} className="text-[#111b21] dark:text-white sm:w-5 sm:h-5" />
                     </button>
                   </>
                 )}
@@ -5093,7 +5091,7 @@ function App() {
                     <Smile size={20} />
                   </button>
                   <button
-                    className="hidden sm:flex text-[#54656f] dark:text-gray-400 hover:text-[#111b21] dark:text-white p-2 rounded-full hover:bg-gray-700/50 transition-colors"
+                    className="flex text-[#54656f] dark:text-gray-400 hover:text-[#111b21] dark:text-white p-2 rounded-full hover:bg-gray-700/50 transition-colors"
                     onClick={() => setShowStickerPicker(true)}
                   >
                     <Sticker size={20} />
@@ -5196,8 +5194,9 @@ function App() {
                       sendMessage();
                     }
                   }}
-                  className="bg-green-600 p-1.5 sm:p-3 rounded-full hover:bg-green-700 transition"
+                  className="bg-green-600 p-1.5 sm:p-3 rounded-full hover:bg-green-700 transition flex items-center justify-center"
                 >
+                  <Send size={16} className="text-white sm:w-5 sm:h-5 ml-1" />
                 </button>
               </div>
             </div>
@@ -7425,7 +7424,19 @@ function App() {
                   pinnedMessages.map((msg, idx) => (
                     <div
                       key={msg._id || idx}
-                      className="bg-[#2a3942] p-3 rounded-lg mb-2 relative"
+                      className="bg-[#2a3942] p-3 rounded-lg mb-2 relative cursor-pointer hover:bg-[#374248] transition-colors"
+                      onClick={() => {
+                        const el = document.getElementById(`msg-${msg._id}`);
+                        if (el) {
+                          setShowPinnedMessages(false);
+                          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          // Add a brief highlight effect
+                          el.classList.add('bg-gray-500/50', 'transition-colors', 'duration-1000');
+                          setTimeout(() => {
+                            el.classList.remove('bg-gray-500/50');
+                          }, 2000);
+                        }
+                      }}
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex flex-col">

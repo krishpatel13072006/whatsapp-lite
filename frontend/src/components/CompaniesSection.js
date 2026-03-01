@@ -83,8 +83,8 @@ const CompaniesSection = () => {
         <section className="py-20 px-6 relative">
             <div style={{ maxWidth: '720px', margin: '0 auto' }}>
                 <div className="flex justify-center mb-8">
-                    <p className="companies-subtitle" style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', fontWeight: 700 }}>
-                        <ColorText text="Companies we collaborate with." />
+                    <p className="companies-subtitle text-white" style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', fontWeight: 700 }}>
+                        Companies we collaborate with.
                     </p>
                 </div>
 

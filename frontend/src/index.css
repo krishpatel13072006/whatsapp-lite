@@ -292,6 +292,7 @@
   z-index: 2;
   mix-blend-mode: darken;
   pointer-events: none;
+  will-change: transform;
 }
 
 .aurora__item {
@@ -303,6 +304,7 @@
   border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
   filter: blur(var(--aurora-blur));
   mix-blend-mode: overlay;
+  will-change: transform, border-radius;
 }
 
 .aurora__item:nth-of-type(1) {
@@ -451,18 +453,22 @@
   background: hsl(var(--card) / 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(59, 130, 246, 0.35);
+  border: 1px solid rgba(59, 130, 246, 0.15);
   border-radius: 1rem;
   box-shadow:
-    0 0 20px rgba(59, 130, 246, 0.2),
-    0 0 50px rgba(59, 130, 246, 0.08),
-    inset 0 1px 0 rgba(59, 130, 246, 0.12);
-  animation: companiesGlow 3s ease-in-out infinite alternate;
-  transition: transform 0.3s ease;
+    0 0 10px rgba(59, 130, 246, 0.05),
+    0 0 20px rgba(59, 130, 246, 0.02),
+    inset 0 1px 0 rgba(59, 130, 246, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 0.5rem;
 }
 
 .faq-card:hover {
   transform: translateY(-2px);
+  box-shadow:
+    0 0 15px rgba(59, 130, 246, 0.1),
+    0 0 30px rgba(59, 130, 246, 0.05),
+    inset 0 1px 0 rgba(59, 130, 246, 0.1);
 }
 
 .faq-question-text {
@@ -538,6 +544,7 @@
     0 0 100px rgba(59, 130, 246, 0.06),
     inset 0 1px 0 rgba(59, 130, 246, 0.15);
   animation: companiesGlow 3s ease-in-out infinite alternate;
+  will-change: box-shadow, border-color;
 }
 
 @keyframes companiesGlow {

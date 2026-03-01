@@ -163,14 +163,15 @@ function FloatingBubbles() {
 
 export default function EmptyChatScene3D() {
     const [mounted, setMounted] = useState(false);
+    const [sceneLoaded, setSceneLoaded] = useState(false); // Added sceneLoaded state
     useEffect(() => { setMounted(true); }, []);
 
     return (
         <div className="relative flex-1 flex flex-col items-center justify-center overflow-hidden bg-[#0b141a]">
 
             {/* Three.js Canvas */}
-            <div className="absolute inset-0 z-0">
-                <Canvas camera={{ position: [0, 0, 5], fov: 55 }} gl={{ antialias: true, alpha: true }}>
+            <div className={`absolute inset-0 z-0 transition-opacity duration-1000 ${sceneLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                <Canvas camera={{ position: [0, 0, 5], fov: 55 }} gl={{ antialias: true, alpha: true }} dpr={[1, 2]} performance={{ min: 0.5 }}>
                     <Suspense fallback={null}>
                         <Scene3D />
                     </Suspense>

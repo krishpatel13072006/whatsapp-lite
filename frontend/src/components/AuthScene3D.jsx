@@ -25,7 +25,7 @@ function ParticleWave(props) {
 export default function AuthScene3D() {
   return (
     <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-      <Canvas camera={{ position: [0, 0, 1] }}>
+      <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]} performance={{ min: 0.5 }}>
         <ParticleWave />
       </Canvas>
       {/* Vignette overlay to blend the 3D scene into the dark theme */}
