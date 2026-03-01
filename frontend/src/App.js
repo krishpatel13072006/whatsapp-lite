@@ -3554,11 +3554,15 @@ function App() {
                         )}
                       </div>
                     </div>
-                    {!hasStatuses && (
-                      <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center border-2 border-[#111b21] shadow-lg">
-                        <span className="text-white text-xs font-bold">+</span>
-                      </div>
-                    )}
+                    <div
+                      className="absolute -bottom-0.5 -right-0.5 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-[#111b21] shadow-lg hover:bg-green-400 transition"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowStatusCreator(true);
+                      }}
+                    >
+                      <Plus className="text-white w-4 h-4" />
+                    </div>
                   </div>
                   <span className="text-[#8696a0] text-[11px] mt-1.5 font-medium">My Status</span>
                 </div>
@@ -4480,11 +4484,11 @@ function App() {
             <div
               className={`flex-1 p-3 sm:p-5 overflow-y-auto relative ${WALLPAPERS[chatTheme.wallpaper] || WALLPAPERS[wallpaper] || WALLPAPERS.default}`}
               style={(!WALLPAPERS[chatTheme.wallpaper] && chatTheme.wallpaper && chatTheme.wallpaper !== 'default') ? {
-                backgroundImage: `url(${chatTheme.wallpaper.startsWith('http') ? chatTheme.wallpaper : `${API_URL}${chatTheme.wallpaper}`})`,
+                backgroundImage: `url(${chatTheme.wallpaper.startsWith('http') || chatTheme.wallpaper.startsWith('data:') ? chatTheme.wallpaper : `${API_URL}${chatTheme.wallpaper}`})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
               } : (!WALLPAPERS[wallpaper] && wallpaper && wallpaper !== 'default') ? {
-                backgroundImage: `url(${wallpaper.startsWith('http') ? wallpaper : `${API_URL}${wallpaper}`})`,
+                backgroundImage: `url(${wallpaper.startsWith('http') || wallpaper.startsWith('data:') ? wallpaper : `${API_URL}${wallpaper}`})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
               } : {}}
@@ -5891,7 +5895,7 @@ function App() {
 
               <div className="flex-1 p-4 sm:p-8 overflow-y-auto flex flex-col items-center">
                 {/* Profile Picture */}
-                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-green-600 rounded-full flex items-center justify-center overflow-hidden mb-3 sm:mb-4">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-green-600 rounded-full flex items-center justify-center overflow-hidden mb-3 sm:mb-4">
                   {viewingUserProfile.profilePicture ? (
                     <>
                       <img
@@ -6887,8 +6891,27 @@ function App() {
                   {new Date(currentStatusUser.statuses[currentStatusIndex]?.createdAt).toLocaleTimeString()}
                 </p>
               </div>
-              <button onClick={() => { setShowStatusViewer(false); setCurrentStatusUser(null); }} className="text-white">
-                <X size={24} />
+              {currentStatusUser.username === localStorage.getItem('username') && (
+                <button
+                  onClick={() => {
+                    const statusId = currentStatusUser.statuses[currentStatusIndex]._id;
+                    if (window.confirm('Are you sure you want to delete this status?')) {
+                      deleteStatus(statusId);
+                      setShowStatusViewer(false);
+                      setCurrentStatusUser(null);
+                    }
+                  }}
+                  className="w-10 h-10 rounded-full bg-[#2a3942] hover:bg-red-500/80 flex items-center justify-center mr-2 transition-colors"
+                  title="Delete Status"
+                >
+                  <Trash2 size={18} className="text-white" />
+                </button>
+              )}
+              <button
+                onClick={() => { setShowStatusViewer(false); setCurrentStatusUser(null); }}
+                className="w-10 h-10 rounded-full bg-[#2a3942] hover:bg-[#374248] flex items-center justify-center transition-colors"
+              >
+                <X size={20} className="text-white" />
               </button>
             </div>
 

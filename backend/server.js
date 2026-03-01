@@ -2569,9 +2569,7 @@ io.on("connection", (socket) => {
         });
       }
     } else {
-      // Target offline, broadcast to all other users? (original behavior)
-      socket.broadcast.emit("receive_message", populatedMessage);
-      console.log('📢 Message broadcast to all (target not found)');
+      console.log(`📢 Target ${data.toUsername} is offline, message saved to database.`);
     }
 
     // ====== SEND PUSH NOTIFICATION ======
