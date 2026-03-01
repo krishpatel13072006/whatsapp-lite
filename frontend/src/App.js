@@ -169,7 +169,7 @@ function BlockUsersList({ blockedContacts, setBlockedContacts }) {
 
 function App() {
   // API URL for backend requests
-  const API_URL = process.env.REACT_APP_API_URL || '${API_URL}';
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem('token'));
   const [isRegistering, setIsRegistering] = useState(false);

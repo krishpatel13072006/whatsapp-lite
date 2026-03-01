@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
 
-const API_URL = '${API_URL}';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 /**
  * Custom hook for Socket.io connection
