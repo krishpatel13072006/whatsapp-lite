@@ -5376,9 +5376,9 @@ function App() {
       {/* Settings Panel */}
       {
         showSettings && (
-          <div className="fixed inset-0 bg-[#0b141a] z-50 flex overflow-hidden">
+          <div className="fixed inset-0 bg-[#f0f2f5] dark:bg-[#0b141a] z-50 flex overflow-hidden">
             <div className="w-full max-w-2xl mx-auto flex flex-col">
-              <div className="p-3 sm:p-4 bg-[#202c33] flex items-center gap-3 sm:gap-4 border-b border-gray-300 dark:border-gray-700 flex-shrink-0">
+              <div className="p-3 sm:p-4 bg-white dark:bg-[#202c33] flex items-center gap-3 sm:gap-4 border-b border-gray-300 dark:border-gray-700 flex-shrink-0">
                 <ArrowLeft
                   className="text-[#aebac1] cursor-pointer hover:text-[#111b21] dark:text-white flex-shrink-0"
                   size={22}
@@ -5389,7 +5389,7 @@ function App() {
 
               <div className="flex-1 p-3 sm:p-4 overflow-y-auto">
                 {/* Profile Picture Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <User size={18} className="sm:w-5 sm:h-5" />
                     Profile Picture
@@ -5458,7 +5458,7 @@ function App() {
                 </div>
 
                 {/* QR Code Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="3" width="7" height="7"></rect>
@@ -5498,7 +5498,7 @@ function App() {
                 </div>
 
                 {/* Profile Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <User size={18} className="sm:w-5 sm:h-5" />
                     Profile
@@ -5511,7 +5511,7 @@ function App() {
                         value={displayName}
                         onChange={(e) => setDisplayName(e.target.value)}
                         placeholder="Enter your display name"
-                        className="w-full bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-400 outline-none border border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
+                        className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       />
                     </div>
                     <div>
@@ -5522,7 +5522,7 @@ function App() {
                         onChange={(e) => setAbout(e.target.value)}
                         placeholder="Hey there! I am using WhatsApp-Lite"
                         maxLength={139}
-                        className="w-full bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-400 outline-none border border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
+                        className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       />
                       <p className="text-gray-500 text-xs mt-1">{about.length}/139</p>
                     </div>
@@ -5533,7 +5533,7 @@ function App() {
                         value={userEmail}
                         onChange={(e) => setUserEmail(e.target.value)}
                         placeholder="Enter your email"
-                        className="w-full bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-400 outline-none border border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
+                        className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       />
                     </div>
                     <div>
@@ -5543,7 +5543,7 @@ function App() {
                         value={userPhone}
                         onChange={(e) => setUserPhone(e.target.value)}
                         placeholder="Enter your phone"
-                        className="w-full bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-400 outline-none border border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
+                        className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       />
                     </div>
                     <button
@@ -5578,7 +5578,7 @@ function App() {
                 </div>
 
                 {/* App Theme Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <Palette size={18} className="sm:w-5 sm:h-5" />
                     App Theme
@@ -5586,13 +5586,13 @@ function App() {
                   <div className="flex gap-4">
                     <button
                       onClick={() => updateTheme('dark-theme')}
-                      className={`flex-1 py-2 sm:py-3 rounded-lg border-2 transition ${theme === 'dark-theme' ? 'border-green-500 bg-[#2a3942]' : 'border-gray-600 hover:border-gray-400'}`}
+                      className={`flex-1 py-2 sm:py-3 rounded-lg border-2 transition ${theme === 'dark-theme' ? 'border-green-500 bg-[#f0f2f5] dark:bg-[#2a3942]' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'}`}
                     >
                       <div className="text-[#111b21] dark:text-white font-medium text-sm sm:text-base">Dark</div>
                     </button>
                     <button
                       onClick={() => updateTheme('light-theme')}
-                      className={`flex-1 py-2 sm:py-3 rounded-lg border-2 transition ${theme === 'light-theme' ? 'border-green-500 bg-[#e5ddd5]' : 'border-gray-600 hover:border-gray-400'}`}
+                      className={`flex-1 py-2 sm:py-3 rounded-lg border-2 transition ${theme === 'light-theme' ? 'border-green-500 bg-white dark:bg-[#e5ddd5]' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'}`}
                     >
                       <div className={`font-medium text-sm sm:text-base ${theme === 'light-theme' ? 'text-black' : 'text-[#111b21] dark:text-white'}`}>Light</div>
                     </button>
@@ -5600,7 +5600,7 @@ function App() {
                 </div>
 
                 {/* Privacy Settings Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <Settings size={18} className="sm:w-5 sm:h-5" />
                     Privacy Settings
@@ -5611,7 +5611,7 @@ function App() {
                       <select
                         value={privacySettings.lastSeen}
                         onChange={(e) => setPrivacySettings(prev => ({ ...prev, lastSeen: e.target.value }))}
-                        className="w-full bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
+                        className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       >
                         <option value="everyone">Everyone</option>
                         <option value="contacts">My Contacts</option>
@@ -5623,7 +5623,7 @@ function App() {
                       <select
                         value={privacySettings.profilePhoto}
                         onChange={(e) => setPrivacySettings(prev => ({ ...prev, profilePhoto: e.target.value }))}
-                        className="w-full bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
+                        className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       >
                         <option value="everyone">Everyone</option>
                         <option value="contacts">My Contacts</option>
@@ -5635,7 +5635,7 @@ function App() {
                       <select
                         value={privacySettings.about}
                         onChange={(e) => setPrivacySettings(prev => ({ ...prev, about: e.target.value }))}
-                        className="w-full bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
+                        className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 sm:p-3 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 mt-1 text-sm sm:text-base"
                       >
                         <option value="everyone">Everyone</option>
                         <option value="contacts">My Contacts</option>
@@ -5672,7 +5672,7 @@ function App() {
                 </div>
 
                 {/* Block Users Section - shows all registered users */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <Ban size={18} className="sm:w-5 sm:h-5" />
                     Block / Unblock Users
@@ -5687,7 +5687,7 @@ function App() {
                 </div>
 
                 {/* Disappearing Messages Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <Clock size={18} className="sm:w-5 sm:h-5" />
                     Default Disappearing Messages
@@ -5710,7 +5710,7 @@ function App() {
                         console.error('Error setting disappearing messages:', err);
                       }
                     }}
-                    className="w-full bg-[#2a3942] p-2.5 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-600 focus:border-green-500 text-sm"
+                    className="w-full bg-[#f0f2f5] dark:bg-[#2a3942] p-2.5 rounded-lg text-[#111b21] dark:text-white outline-none border border-gray-300 dark:border-gray-600 focus:border-green-500 text-sm"
                   >
                     <option value="0">Off</option>
                     <option value="86400">24 hours</option>
@@ -5720,7 +5720,7 @@ function App() {
                 </div>
 
                 {/* Wallpaper Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <Image size={18} className="sm:w-5 sm:h-5" />
                     Chat Wallpaper
@@ -5771,7 +5771,7 @@ function App() {
                     />
                     <label
                       htmlFor="wallpaper-input"
-                      className="bg-[#2a3942] hover:bg-[#3d4a51] p-2 px-4 rounded-lg text-[#111b21] dark:text-white text-sm cursor-pointer transition inline-block text-center"
+                      className="bg-[#f0f2f5] dark:bg-[#2a3942] border border-gray-300 dark:border-transparent hover:bg-gray-200 dark:hover:bg-[#3d4a51] p-2 px-4 rounded-lg text-[#111b21] dark:text-white text-sm cursor-pointer transition inline-block text-center"
                     >
                       Upload Wallpaper
                     </label>
@@ -5798,7 +5798,7 @@ function App() {
                 </div>
 
                 {/* Notification Settings Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <Bell size={18} className="sm:w-5 sm:h-5" />
                     Notification Settings
@@ -5841,7 +5841,7 @@ function App() {
                 </div>
 
                 {/* Export Messages Section */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg mb-3 sm:mb-4">
                   <h3 className="text-[#111b21] dark:text-white font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <File size={18} className="sm:w-5 sm:h-5" />
                     Export Messages
@@ -5858,8 +5858,8 @@ function App() {
                 </div>
 
                 {/* Danger Zone - Delete Account */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg border border-red-900">
-                  <h3 className="text-red-400 font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg border border-red-900">
+                  <h3 className="text-red-600 dark:text-red-400 font-medium mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                     <Trash2 size={18} className="sm:w-5 sm:h-5" />
                     Danger Zone
                   </h3>
@@ -5899,9 +5899,9 @@ function App() {
       {/* User Profile View Modal */}
       {
         viewingUserProfile && (
-          <div className="fixed inset-0 bg-[#0b141a] z-50 flex overflow-hidden">
+          <div className="fixed inset-0 bg-[#f0f2f5] dark:bg-[#0b141a] z-50 flex overflow-hidden">
             <div className="w-full max-w-2xl mx-auto flex flex-col">
-              <div className="p-3 sm:p-4 bg-[#202c33] flex items-center gap-3 sm:gap-4 border-b border-gray-300 dark:border-gray-700 flex-shrink-0">
+              <div className="p-3 sm:p-4 bg-white dark:bg-[#202c33] flex items-center gap-3 sm:gap-4 border-b border-gray-300 dark:border-gray-700 flex-shrink-0">
                 <ArrowLeft
                   className="text-[#aebac1] cursor-pointer hover:text-[#111b21] dark:text-white flex-shrink-0"
                   size={22}
@@ -5941,28 +5941,28 @@ function App() {
                 <p className="text-[#54656f] dark:text-gray-400 text-base sm:text-lg mb-3 sm:mb-4">@{viewingUserProfile.username}</p>
 
                 {/* About */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md mb-3 sm:mb-4">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md mb-3 sm:mb-4">
                   <p className="text-[#54656f] dark:text-gray-400 text-xs sm:text-sm mb-1">About</p>
                   <p className="text-[#111b21] dark:text-white text-sm sm:text-base">{viewingUserProfile.about || 'No status'}</p>
                 </div>
 
                 {/* Phone/Email */}
                 {viewingUserProfile.phoneNumber && (
-                  <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md mb-3 sm:mb-4">
+                  <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md mb-3 sm:mb-4">
                     <p className="text-[#54656f] dark:text-gray-400 text-xs sm:text-sm mb-1">Phone</p>
                     <p className="text-[#111b21] dark:text-white text-sm sm:text-base">{viewingUserProfile.phoneNumber}</p>
                   </div>
                 )}
 
                 {viewingUserProfile.email && (
-                  <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md mb-3 sm:mb-4">
+                  <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md mb-3 sm:mb-4">
                     <p className="text-[#54656f] dark:text-gray-400 text-xs sm:text-sm mb-1">Email</p>
                     <p className="text-[#111b21] dark:text-white text-sm sm:text-base">{viewingUserProfile.email}</p>
                   </div>
                 )}
 
                 {/* Online Status */}
-                <div className="bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md">
+                <div className="bg-white dark:bg-[#202c33] p-3 sm:p-4 rounded-lg w-full max-w-md">
                   <p className="text-[#54656f] dark:text-gray-400 text-xs sm:text-sm mb-1">Status</p>
                   <p className={`text-sm sm:text-base ${viewingUserProfile.isOnline ? "text-green-400" : "text-[#54656f] dark:text-gray-400"}`}>
                     {viewingUserProfile.isOnline ? 'Online' : viewingUserProfile.lastSeen ? `Last seen ${new Date(viewingUserProfile.lastSeen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Offline'}
