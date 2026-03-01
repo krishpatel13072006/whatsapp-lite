@@ -1240,7 +1240,7 @@ function App() {
       let errorMessage = 'Login failed. ';
 
       if (!err.response) {
-        errorMessage += 'Cannot connect to server. Make sure backend is running on port 5000.';
+        errorMessage += 'Cannot connect to server. Make sure backend is running on port 3001.';
       } else if (err.response.status === 401) {
         errorMessage += 'Invalid username or password.';
       } else if (err.response.status === 500) {
